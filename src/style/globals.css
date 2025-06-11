@@ -7,17 +7,35 @@ html {
 @theme {
   --color-bg: #333333;
   --color-primary: #007aff;
-  --color-textPrimary: #1C1C1E
+  --color-textPrimary: #1c1c1e;
 }
 
 @layer components {
   .inputBase {
     @apply bg-white text-textPrimary outline-2 rounded-lg pl-2 focus:outline-primary;
   }
+
   .botaoPrimario {
     @apply bg-primary hover:opacity-75 delay-75 transition rounded-lg;
   }
+  
   .textoPrimario {
     @apply text-3xl font-bold;
+  }
+
+  .textoSecundario {
+    @apply text-2xl font-semibold;
+  }
+
+  .textoTerciario {
+    @apply text-xl font-medium;
+  }
+
+  .textoMedioNegrito {
+    @apply text-sm font-medium;
+  }
+
+  .textoPequeno {
+    @apply text-xs;
   }
 }
