@@ -7,12 +7,17 @@ html {
 @theme {
   --color-bg: #333333;
   --color-primary: #007aff;
+  --color-sucess: #34C759;
+  --color-warning: #FF9500;
+  --color-error: #FF3B30;
+
   --color-textPrimary: #1c1c1e;
+  --color-textSecond: #8E8E93;
 }
 
 @layer components {
   .inputBase {
-    @apply bg-white text-textPrimary outline-2 rounded-lg pl-2 focus:outline-primary;
+    @apply bg-white  text-textPrimary outline-2 rounded-lg pl-2 focus:outline-primary;
   }
 
   .botaoPrimario {
