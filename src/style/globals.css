@@ -5,44 +5,43 @@ html {
 }
 
 @theme {
-  --color-bg: #333333;
-  --color-primary: #007aff;
+  --color-ui-background: #06121e;
+  --color-brand-primary: #007aff;
 
-  --color-sucess: #34C759;
-  --color-warning: #FF9500;
-  --color-error: #FF3B30;
+  --color-feedback-success: #34c759;
+  --color-feedback-warning: #ff9500;
+  --color-feedback-error: #ff3b30;
 
-  --color-textPrimary: #1c1c1e;
-  --color-textSecond: #8E8E93;
-
+  --color-text-primary: #1c1c1e;
+  --color-text-secondary: #8e8e93;
 }
 
 @layer components {
-  .inputBase {
-    @apply bg-white text-textPrimary text-textSecond outline-2 rounded-lg pl-2 focus:outline-primary border-textPrimary;
+  .input-base {
+    @apply bg-white text-text-primary outline-2 rounded-lg pl-2 focus:outline-brand-primary border border-text-secondary;  
   }
-  
-  .botaoPrimario {
-    @apply bg-primary hover:opacity-75 delay-75 transition rounded-lg;
+
+  .botao-primario {
+    @apply bg-brand-primary hover:opacity-75 delay-75 transition rounded-lg cursor-pointer font-bold;
   }
-  
-  .textoPrimario {
+
+  .heading-1 {
     @apply text-3xl font-bold;
   }
 
-  .textoSecundario {
+  .heading-2 {
     @apply text-2xl font-semibold;
   }
 
-  .textoTerciario {
+  .heading-3 {
     @apply text-xl font-medium;
   }
 
-  .textoMedioNegrito {
+  .text-body-bold {
     @apply text-sm font-medium;
   }
 
-  .textoPequeno {
+  .text-caption {
     @apply text-xs;
   }
 }

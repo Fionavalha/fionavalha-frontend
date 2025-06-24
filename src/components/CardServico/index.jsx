@@ -1,14 +1,14 @@
 export default function CardServico({ tipoCorte, horario, valor, formaPagamento }) {
   return (
     <>
-      <section className="  w-72 min-h-14 rounded-lg bg-white p-2 ">
+      <section className="w-72 min-h-14 rounded-lg bg-white p-2">
         <div className="flex justify-between items-center">
-          <p className="text-textPrimary textoMedioNegrito">{tipoCorte}</p>
-          <p className=" text-textSecond">{horario}</p>
+          <p className="text-text-primary text-body-bold">{tipoCorte}</p>
+          <p className=" text-text-secondary">{horario}</p>
         </div>
         <div className="flex justify-between items-center">
-          <p className="text-textSecond">{formaPagamento}</p>
-          <p className="text-sucess textoMedioNegrito">
+          <p className="text-text-secondary">{formaPagamento}</p>
+          <p className="text-feedback-sucess text-body-bold">
             {valor.toLocaleString("pt-br", {
               style: "currency",
               currency: "BRL",
