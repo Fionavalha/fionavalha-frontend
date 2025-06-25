@@ -26,15 +26,15 @@ html {
   }
 
   .heading-1 {
-    @apply text-3xl font-bold;
+    @apply text-3xl sm:text-5xl font-bold;
   }
 
   .heading-2 {
-    @apply text-2xl font-semibold;
+    @apply text-2xl sm:text-3xl font-semibold;
   }
 
   .heading-3 {
-    @apply text-xl font-medium;
+    @apply text-xl sm:text-2xl font-medium;
   }
 
   .text-body-bold {
