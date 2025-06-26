@@ -3,7 +3,15 @@
 html {
   font-family: "Inter", sans-serif;
 }
+input[type=number]::-webkit-inner-spin-button { 
+    -webkit-appearance: none;
 
+}
+input[type=number] { 
+   -moz-appearance: textfield;
+   appearance: textfield;
+
+}
 @theme {
   --color-bg: #333333;
   --color-primary: #007aff;
