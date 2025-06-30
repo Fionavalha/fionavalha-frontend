@@ -4,7 +4,7 @@ import imagemSobre from "../../../assets/images/imagem-sobre.svg";
 export default function HomeSobre() {
   return (
     <>
-      <section className="flex justify-center items-center px-2 min-h-screen">
+      <section className="flex justify-center items-center px-2 min-h-svh">
         <div className="container flex flex-wrap justify-around items-center px-2">
           <picture>
             <img src={imagemSobre} className="w-96 h-96 sm:w-full sm:h-full" alt="" />

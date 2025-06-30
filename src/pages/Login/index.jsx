@@ -16,7 +16,7 @@ export default function Login() {
               <input className="input-base h-10" id="senha" type="password" />
             </div>
           </section>
-          <button className="botao-primario w-full h-10">Entrar</button>
+          <button className="botao-base w-full h-10 bg-brand-primary">Entrar</button>
         </form>
       </main>
     </>
