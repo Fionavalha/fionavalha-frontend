@@ -11,6 +11,16 @@ body {
   @apply bg-ui-background;
 }
 
+input[type=number]::-webkit-inner-spin-button { 
+    -webkit-appearance: none;
+}
+
+input[type=number] { 
+   -moz-appearance: textfield;
+   appearance: textfield;
+
+}
+
 @theme {
   --color-ui-background: #06121e;
   --color-brand-primary: #007aff;
