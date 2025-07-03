@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const api = axios.create({
-  baseURL: "http://192.168.3.66:3000",
+  baseURL: "http://192.168.2.103:3000",
   auth: {
     username: "hP3S7l11Kg]",
     password: "3|^B2hfnI?47",
@@ -14,10 +14,10 @@ export async function efetuarLogin(pNomeBarbeiro, pSenha) {
       senha: pSenha,
     });
 
-    return response;
+    return response.data;
   } catch (error) {
     console.error(error);
-    return false;
+    throw error.response?.data?.erro || "Falha na comunicação com servidor";
   }
 }
 
