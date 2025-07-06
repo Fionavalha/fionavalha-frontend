@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import corte1 from "../../../assets/images/corte1.png";
 import HomeCardCorte from "./HomeCardCorte";
-import { listarCabelos } from "../../../services/api";
+import { consultarCabelos } from "../../../services/api";
 import { formatarDinheiro } from "../../../utils/formatador";
 
 export default function HomeServicos() {
@@ -9,7 +9,7 @@ export default function HomeServicos() {
 
   async function listarCortes() {
     try {
-      const responseCabelos = await listarCabelos();
+      const responseCabelos = await consultarCabelos();
       console.log(responseCabelos.data);
       setCortesCabelos(responseCabelos.data);
     } catch (error) {

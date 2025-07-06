@@ -35,7 +35,7 @@ input[type=number] {
 
 @layer components {
   .input-base {
-    @apply bg-white text-text-primary outline-2 rounded-lg pl-2 focus:outline-brand-primary border border-text-secondary;
+    @apply bg-white text-text-primary rounded-lg pl-2 focus:outline-brand-primary border border-text-secondary;
   }
 
   .botao-base {
@@ -55,11 +55,11 @@ input[type=number] {
   }
 
   .text-body-bold {
-    @apply text-sm font-medium;
+    @apply text-base font-medium;
   }
 
   .text-caption {
-    @apply text-xs;
+    @apply text-sm;
   }
 }
 
