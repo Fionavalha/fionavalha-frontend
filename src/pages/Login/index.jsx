@@ -14,19 +14,11 @@ export default function Login() {
     e.preventDefault();
     try {
       await efetuarLogin(nome, senha);
-      toast.success("Login efetuado com sucesso", {
-        style: {
-          color: "#34c759",
-        },
-      });
+      toast.success("Login efetuado com sucesso");
       navigate("/inicio");
     } catch (error) {
       console.error(error);
-      toast.error(error, {
-        style: {
-          color: "#ff3b30",
-        },
-      });
+      toast.error(error);
     }
   }
 
