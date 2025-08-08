@@ -1,10 +1,9 @@
 import axios from "axios";
 
 export const api = axios.create({
-  baseURL: "http://192.168.2.103:3000",
-  auth: {
-    username: "hP3S7l11Kg]",
-    password: "3|^B2hfnI?47",
+  baseURL: "http://192.168.2.107:3000",
+  headers: {
+    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJub21lIjoiUElOSkEiLCJpYXQiOjE3NTIwMTQ1NzZ9.pKsnAOryYtMJqLDul6D3bbHF2xsnNjM49GByu4C9D04`,
   },
 });
 
@@ -69,5 +68,23 @@ export async function consultarFormasPagamento() {
   } catch (error) {
     console.error(error);
     return [];
+  }
+}
+
+export async function consultarReceitas() {
+  try {
+    const response = await api.get("/receitas");    
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function consultarDespesas() {
+  try {
+    const response = await api.get("/despesas");    
+    return response.data;
+  } catch (error) {
+    console.error(error);
   }
 }
