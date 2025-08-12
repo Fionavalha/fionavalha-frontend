@@ -1,5 +1,5 @@
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { formatarDinheiro } from "../../../../utils/formatador";
+import { desformatarDinheiro, formatarDataPtBr, formatarDinheiro } from "../../../../utils/formatador";
 
 export function TabelaReceitas({ data = [], total = null }) {
   return (
@@ -24,10 +24,11 @@ export function TabelaReceitas({ data = [], total = null }) {
       </TableBody>
       <TableFooter>
         <TableRow>
-          <TableCell className="text-left font-bold" colSpan={2}>
+          <TableCell className="text-left font-bold w-1/2">
             TOTAL
           </TableCell>
-          <TableCell className="text-right font-bold ">{formatarDinheiro(Number(total?.valor_total))}</TableCell>
+          <TableCell className="text-center font-bold w-1/4">{total?.qtd}</TableCell>
+          <TableCell className="text-right font-bold w-1/4">{formatarDinheiro(Number(total?.valor_total))}</TableCell>
         </TableRow>
       </TableFooter>
     </Table>
@@ -51,7 +52,7 @@ export function TabelaDespesas({ data = [], total = null }) {
           data.map((item) => (
             <TableRow key={item?.id_despesa}>
               <TableCell className="w-2/3 text-left">{item?.nome_despesa}</TableCell>
-              <TableCell className="w-1/5 text-center">{item?.data_despesa}</TableCell>
+              <TableCell className="w-1/5 text-center">{formatarDataPtBr(item?.data_despesa)}</TableCell>
               <TableCell className="w-1/5 text-center">{item?.fixa}</TableCell>
               <TableCell className="w-1/5 text-right">{formatarDinheiro(Number(item?.valor_despesa))}</TableCell>
             </TableRow>
@@ -76,7 +77,7 @@ export function TabelaTotal({ total = null }) {
       <TableBody>
         <TableRow>
           <TableCell className="font-bold">TOTAL</TableCell>
-          <TableCell className="text-right font-bold">{total}</TableCell>
+          <TableCell className={`${desformatarDinheiro(total) > 0 ? "text-feedback-success" : "text-feedback-error"} text-right font-bold`}>{total}</TableCell>
         </TableRow>
       </TableBody>
     </Table>

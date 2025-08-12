@@ -71,18 +71,18 @@ export async function consultarFormasPagamento() {
   }
 }
 
-export async function consultarReceitas() {
+export async function consultarReceitas(dataInicial, dataFinal) {
   try {
-    const response = await api.get("/receitas");    
+    const response = await api.get(`/receitas?data_inicial=${dataInicial}&data_final=${dataFinal}`);
     return response.data;
   } catch (error) {
     console.error(error);
   }
 }
 
-export async function consultarDespesas() {
+export async function consultarDespesas(dataInicial, dataFinal) {
   try {
-    const response = await api.get("/despesas");    
+    const response = await api.get(`/despesas?data_inicial=${dataInicial}&data_final=${dataFinal}`);
     return response.data;
   } catch (error) {
     console.error(error);
