@@ -1,11 +1,8 @@
 import axios from "axios";
 
 export const api = axios.create({
-  baseURL: "http://192.168.2.103:3000",
-  auth: {
-    username: "hP3S7l11Kg]",
-    password: "3|^B2hfnI?47",
-  },
+  baseURL: "http://192.168.3.66:3000",
+  headers: { Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJub21lIjoiUElOSkEiLCJpYXQiOjE3NTIxMDI3MTl9.z5NlQ_lkW2hlqF_Z8Cc9ZzT2zB_XClSjKtAjq9pePvQ" },
 });
 
 export async function efetuarLogin(pNomeBarbeiro, pSenha) {
@@ -65,6 +62,56 @@ export async function consultarAdicionais() {
 export async function consultarFormasPagamento() {
   try {
     const response = await api.get("/formas-pagamento");
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+}
+export async function adicionarServicoRealizado(pFormaPagamentoId, pValorTotal, pItemId,) {
+  try {
+    await api.post("/servicos-realizados", {
+      forma_pagamento_id: pFormaPagamentoId,
+      valor_total: pValorTotal,
+      itens: pItemId,
+    });
+  } catch (error) {
+    console.error(error);
+    throw error.response?.data?.erro || "Falha ao confimar o serviço";
+  }
+}
+
+// // export async function inserirServicosRealizados(pCabelo, pBarba, pSobrancelha, pAdicional, pPagamento, pValor) {
+// //   try {
+// //     const response = await api.post("/servicos-realizados", {
+// //       cabelo_id: pCabelo,
+// //       barba_id: pBarba,
+// //       sobrancelha_id: pSobrancelha,
+// //       adicional_id: pAdicional,
+// //       forma_pagamento_id: pPagamento,
+// //       valor_servico_realizado: pValor,
+// //     });
+
+// //     return response.data;
+// //   } catch (error) {
+// //     console.error(error);
+// //     return [];
+// //   }
+// }
+
+export async function consultarServicosRealizados() {
+  try {
+    const response = await api.get("/servicos-realizados");
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+}
+
+export async function consultarServicoRealizado(id) {
+  try {
+    const response = await api.get("/servicos-realizados/"+id);
     return response.data;
   } catch (error) {
     console.error(error);
