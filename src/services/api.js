@@ -68,6 +68,7 @@ export async function consultarFormasPagamento() {
     return [];
   }
 }
+
 export async function adicionarServicoRealizado(pFormaPagamentoId, pValorTotal, pItemId,) {
   try {
     await api.post("/servicos-realizados", {
@@ -80,25 +81,6 @@ export async function adicionarServicoRealizado(pFormaPagamentoId, pValorTotal, 
     throw error.response?.data?.erro || "Falha ao confimar o serviço";
   }
 }
-
-// // export async function inserirServicosRealizados(pCabelo, pBarba, pSobrancelha, pAdicional, pPagamento, pValor) {
-// //   try {
-// //     const response = await api.post("/servicos-realizados", {
-// //       cabelo_id: pCabelo,
-// //       barba_id: pBarba,
-// //       sobrancelha_id: pSobrancelha,
-// //       adicional_id: pAdicional,
-// //       forma_pagamento_id: pPagamento,
-// //       valor_servico_realizado: pValor,
-// //     });
-
-// //     return response.data;
-// //   } catch (error) {
-// //     console.error(error);
-// //     return [];
-// //   }
-// }
-
 export async function consultarServicosRealizados() {
   try {
     const response = await api.get("/servicos-realizados");
@@ -118,3 +100,23 @@ export async function consultarServicoRealizado(id) {
     return [];
   }
 }
+
+
+export async function consultarReceitas(dataInicial, dataFinal) {
+  try {
+    const response = await api.get(`/receitas?data_inicial=${dataInicial}&data_final=${dataFinal}`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function consultarDespesas(dataInicial, dataFinal) {
+  try {
+    const response = await api.get(`/despesas?data_inicial=${dataInicial}&data_final=${dataFinal}`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
