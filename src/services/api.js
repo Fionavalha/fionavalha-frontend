@@ -1,8 +1,10 @@
 import axios from "axios";
 
 export const api = axios.create({
-  baseURL: "http://192.168.3.66:3000",
-  headers: { Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJub21lIjoiUElOSkEiLCJpYXQiOjE3NTIxMDI3MTl9.z5NlQ_lkW2hlqF_Z8Cc9ZzT2zB_XClSjKtAjq9pePvQ" },
+  baseURL: "http://192.168.2.107:3000",
+  headers: {
+    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJub21lIjoiUElOSkEiLCJpYXQiOjE3NTIwMTQ1NzZ9.pKsnAOryYtMJqLDul6D3bbHF2xsnNjM49GByu4C9D04`,
+  },
 });
 
 export async function efetuarLogin(pNomeBarbeiro, pSenha) {
@@ -67,7 +69,7 @@ export async function consultarFormasPagamento() {
     console.error(error);
     return [];
   }
-}
+
 export async function adicionarServicoRealizado(pFormaPagamentoId, pValorTotal, pItemId,) {
   try {
     await api.post("/servicos-realizados", {
@@ -80,25 +82,6 @@ export async function adicionarServicoRealizado(pFormaPagamentoId, pValorTotal, 
     throw error.response?.data?.erro || "Falha ao confimar o serviço";
   }
 }
-
-// // export async function inserirServicosRealizados(pCabelo, pBarba, pSobrancelha, pAdicional, pPagamento, pValor) {
-// //   try {
-// //     const response = await api.post("/servicos-realizados", {
-// //       cabelo_id: pCabelo,
-// //       barba_id: pBarba,
-// //       sobrancelha_id: pSobrancelha,
-// //       adicional_id: pAdicional,
-// //       forma_pagamento_id: pPagamento,
-// //       valor_servico_realizado: pValor,
-// //     });
-
-// //     return response.data;
-// //   } catch (error) {
-// //     console.error(error);
-// //     return [];
-// //   }
-// }
-
 export async function consultarServicosRealizados() {
   try {
     const response = await api.get("/servicos-realizados");
@@ -118,3 +101,4 @@ export async function consultarServicoRealizado(id) {
     return [];
   }
 }
+
