@@ -5,7 +5,9 @@ export default function Contador() {
   const [contador, setContador] = useState(0);
 
   const aumentar = () => {
-    setContador((prevstate) => prevstate + 1);
+    if (contador <= 99) {
+      setContador((prevstate) => prevstate + 1);
+    }
   };
 
   const diminuir = () => {
@@ -16,20 +18,24 @@ export default function Contador() {
 
   return (
     <>
-      <section className="flex justify-around w-40 h-12 ">
+      <section className="flex justify-around w-46 h-12 ">
         <button onClick={diminuir}>
-          <CircleMinus className="text-feedback-error w-10 h-10 " />
+          <CircleMinus className="text-feedback-error w-13 h-13 " />
         </button>
         <input
-          type="Number"
+          type="text"
+          maxLength={2}
           value={contador}
           onChange={(e) => {
-            setContador(Number(e.target.value));
+            const valor = Number(e.target.value);
+            if (!isNaN(valor)) {
+              setContador(valor);
+            }
           }}
-          className=" outline-text-secondary-1 focus:outline-text-secondary border-1 border-text-secondary w-12 h-12 rounded-xl text-center text-white"
+          className=" outline-text-secondary-1 focus:outline-text-secondary border-1 border-text-secondary w-13 h-13 rounded-xl text-center text-white"
         />
         <button onClick={aumentar}>
-          <CirclePlus className="text-brand-primary w-10 h-10" />
+          <CirclePlus className="text-brand-primary w-13 h-13" />
         </button>
       </section>
     </>
