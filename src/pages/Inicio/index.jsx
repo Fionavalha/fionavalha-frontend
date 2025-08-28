@@ -36,7 +36,7 @@ export default function Inicio() {
   }, []);
   return (
     <>
-      <ModalServico isModalOpen={openModal} setIsModalOpen={setOpenModal} editar={isEditar} dataServico={dataServico}  />
+      <ModalServico isModalOpen={openModal} setIsModalOpen={setOpenModal} editar={isEditar} dataServico={dataServico} />
 
       <div className="flex flex-col h-dvh relative">
         <Link to="/login" className="p-2">
@@ -79,10 +79,17 @@ export default function Inicio() {
         </section>
 
         <div className="fixed bottom-21 right-5 z-20">
-          <button onClick={() => setOpenModal(true)}>
+          <button
+            onClick={() => {
+              setIsEditar(false);
+              setDataServico([]);
+              setOpenModal(true);
+            }}
+          >
             <Plus className="transition text-white border border-brand-primary rounded-full bg-brand-primary cursor-pointer w-13 h-13 p-2" />
           </button>
         </div>
+
         <footer>
           <Rodape />
         </footer>
