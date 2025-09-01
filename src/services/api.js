@@ -71,6 +71,39 @@ export async function consultarFormasPagamento() {
   }
 }
 
+export async function adicionarServicoRealizado(pFormaPagamentoId, pValorTotal, pItemId,) {
+  try {
+    await api.post("/servicos-realizados", {
+      forma_pagamento_id: pFormaPagamentoId,
+      valor_total: pValorTotal,
+      itens: pItemId,
+    });
+  } catch (error) {
+    console.error(error);
+    throw error.response?.data?.erro || "Falha ao confimar o serviço";
+  }
+}
+export async function consultarServicosRealizados() {
+  try {
+    const response = await api.get("/servicos-realizados");
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+}
+
+export async function consultarServicoRealizado(id) {
+  try {
+    const response = await api.get("/servicos-realizados/"+id);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+}
+
+
 export async function consultarReceitas(dataInicial, dataFinal) {
   try {
     const response = await api.get(`/receitas?data_inicial=${dataInicial}&data_final=${dataFinal}`);
