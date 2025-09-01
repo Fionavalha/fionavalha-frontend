@@ -1,8 +1,10 @@
 import axios from "axios";
 
 export const api = axios.create({
-  baseURL: "http://192.168.3.66:3000",
-  headers: { Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJub21lIjoiUElOSkEiLCJpYXQiOjE3NTIxMDI3MTl9.z5NlQ_lkW2hlqF_Z8Cc9ZzT2zB_XClSjKtAjq9pePvQ" },
+  baseURL: "http://localhost:3000",
+  headers: {
+    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJub21lIjoiUElOSkEiLCJpYXQiOjE3NTIwMTQ1NzZ9.pKsnAOryYtMJqLDul6D3bbHF2xsnNjM49GByu4C9D04`,
+  },
 });
 
 export async function efetuarLogin(pNomeBarbeiro, pSenha) {
@@ -111,12 +113,16 @@ export async function consultarReceitas(dataInicial, dataFinal) {
   }
 }
 
-export async function consultarDespesas(dataInicial, dataFinal) {
+export async function consultarDespesas(dataInicial = "", dataFinal = "") {
   try {
-    const response = await api.get(`/despesas?data_inicial=${dataInicial}&data_final=${dataFinal}`);
+    let response;
+    if (dataInicial !== "" && dataFinal !== "") {
+      response = await api.get(`/despesas?data_inicial=${dataInicial}&data_final=${dataFinal}`);    
+    } else {
+      response = await api.get(`/despesas`);    
+    }
     return response.data;
   } catch (error) {
     console.error(error);
   }
 }
-

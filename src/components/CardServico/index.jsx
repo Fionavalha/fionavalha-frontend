@@ -1,5 +1,4 @@
 export default function CardServico({ tipoCorte, horario, valor, formaPagamento, id_servico, onClick = () => {} }) {
-
   return (
     <>
       <section
