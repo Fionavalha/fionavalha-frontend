@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const api = axios.create({
-  baseURL: "http://192.168.2.107:3000",
+  baseURL: "http://localhost:3000",
   headers: {
     Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJub21lIjoiUElOSkEiLCJpYXQiOjE3NTIwMTQ1NzZ9.pKsnAOryYtMJqLDul6D3bbHF2xsnNjM49GByu4C9D04`,
   },
@@ -80,9 +80,14 @@ export async function consultarReceitas(dataInicial, dataFinal) {
   }
 }
 
-export async function consultarDespesas(dataInicial, dataFinal) {
+export async function consultarDespesas(dataInicial = "", dataFinal = "") {
   try {
-    const response = await api.get(`/despesas?data_inicial=${dataInicial}&data_final=${dataFinal}`);
+    let response;
+    if (dataInicial !== "" && dataFinal !== "") {
+      response = await api.get(`/despesas?data_inicial=${dataInicial}&data_final=${dataFinal}`);    
+    } else {
+      response = await api.get(`/despesas`);    
+    }
     return response.data;
   } catch (error) {
     console.error(error);
