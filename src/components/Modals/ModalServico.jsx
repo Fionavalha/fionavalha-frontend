@@ -1,10 +1,19 @@
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { adicionarServicoRealizado, consultarAdicionais, consultarBarbas, consultarCabelos, consultarFormasPagamento, consultarSobrancelhas } from "../../services/api";
+import {
+  adicionarServicoRealizado,
+  consultarAdicionais,
+  consultarBarbas,
+  consultarCabelos,
+  consultarFormasPagamento,
+  consultarSobrancelhas,
+  editarServicoRealizado,
+  excluirServicoRealizado,
+} from "../../services/api";
 import { useEffect, useState } from "react";
 import { AlertDialogDemo } from "../Alert";
 import { toast } from "sonner";
 
-export function ModalServico({ editar, isModalOpen, setIsModalOpen,dataServico   }) {
+export function ModalServico({ editar, isModalOpen, setIsModalOpen, dataServico }) {
   const [dataCabelos, setDataCabelos] = useState([]);
   const [cabelo, setCabelo] = useState(null);
 
@@ -20,7 +29,7 @@ export function ModalServico({ editar, isModalOpen, setIsModalOpen,dataServico  
   const [dataFormasPagamento, setDataFormasPagamento] = useState([]);
   const [formaPagamento, setFormaPagamento] = useState(null);
 
-  const [isModalExluir, setIsModalExcluir] = useState(false);
+  const [isModalExcluir, setIsModalExcluir] = useState(false);
 
   const adicionalCartao = formaPagamento?.id_forma_pagamento === 3 ? 2 : formaPagamento?.id_forma_pagamento === 4 && 2;
   const valorTotal =
@@ -65,58 +74,90 @@ export function ModalServico({ editar, isModalOpen, setIsModalOpen,dataServico  
   }
 
   async function listarServicos() {
-    await listarCabelos();
-    await listarBarbas();
-    await listarSobrancelhas();
-    await listarAdicionais();
-    await listarFormasPagamento();
+    await Promise.all([listarCabelos(), listarBarbas(), listarSobrancelhas(), listarAdicionais(), listarFormasPagamento()]);
   }
 
-  async function handleConfimar() {
+  async function handleConfirmar() {
     if (!verificarCampo()) return;
 
     const itens = [];
-
     if (cabelo) itens.push({ tipo: "cabelo", item_id: cabelo.id_cabelo, valor_item: Number(cabelo.valor_cabelo) });
     if (barba) itens.push({ tipo: "barba", item_id: barba.id_barba, valor_item: Number(barba.valor_barba) });
     if (sobrancelha) itens.push({ tipo: "sobrancelha", item_id: sobrancelha.id_sobrancelha, valor_item: Number(sobrancelha.valor_sobrancelha) });
     if (adicional) itens.push({ tipo: "adicional", item_id: adicional.id_adicional, valor_item: Number(adicional.valor_adicional) });
 
     try {
-      await adicionarServicoRealizado(formaPagamento.id_forma_pagamento, valorTotal, itens);
+      if (editar) {
+        await editarServicoRealizado(dataServico[0].id_servico_realizado, formaPagamento.id_forma_pagamento, valorTotal, itens);
+      } else {
+        await adicionarServicoRealizado(formaPagamento.id_forma_pagamento, valorTotal, itens);
+      }
       setIsModalOpen(false);
-      setTimeout(() => {
-        window.location.reload();
-      }, 1100);
     } catch (error) {
       toast.error(error);
     }
   }
-    useEffect(() => {
-    if (editar && dataServico) {
-      setCabelo(dataServico.cabelo || null);
-      setBarba(dataServico.barba || null);
-      setSobrancelha(dataServico.sobrancelha || null);
-      setAdicional(dataServico.adicional || null);
-      setFormaPagamento(dataServico.formaPagamento || null);
-      console.log(dataServico)
-    } else {
 
-      setCabelo(null);
-      setBarba(null);
-      setSobrancelha(null);
-      setAdicional(null);
-      setFormaPagamento(null);
-    }
-  }, [editar, dataServico]);
+  async function handleExcluir() {
+    await excluirServicoRealizado(dataServico[0].id_servico_realizado);
+    toast.success("Serviço excluído com sucesso!");
+    setIsModalOpen(false);
+  }
+
+  function normalizarDataServico(lista) {
+    if (!lista || lista.length === 0) return null;
+
+    const base = {
+      formaPagamento: {
+        id_forma_pagamento: lista[0].forma_pagamento_id,
+        nome_pagamento: lista[0].nome_pagamento,
+      },
+      valor_total: lista[0].valor_total,
+      data_servico_realizado: lista[0].data_servico_realizado,
+      cabelo: null,
+      barba: null,
+      sobrancelha: null,
+      adicional: null,
+    };
+
+    lista.forEach((item) => {
+      if (item.tipo === "cabelo") base.cabelo = { id_cabelo: item.item_id, valor_cabelo: item.valor_item, nome_cabelo: item.nome_item };
+      if (item.tipo === "barba") base.barba = { id_barba: item.item_id, valor_barba: item.valor_item, nome_barba: item.nome_item };
+      if (item.tipo === "sobrancelha") base.sobrancelha = { id_sobrancelha: item.item_id, valor_sobrancelha: item.valor_item, nome_sobrancelha: item.nome_item };
+      if (item.tipo === "adicional") base.adicional = { id_adicional: item.item_id, valor_adicional: item.valor_item, nome_adicional: item.nome_item };
+    });
+
+    return base;
+  }
 
   useEffect(() => {
     listarServicos();
   }, []);
 
+  useEffect(() => {
+    if (!editar || !dataServico || dataServico.length === 0) return;
+
+    const normalizado = normalizarDataServico(dataServico);
+
+    setCabelo(normalizado.cabelo ? dataCabelos.find((c) => c.id_cabelo === normalizado.cabelo.id_cabelo) : null);
+    setBarba(normalizado.barba ? dataBarbas.find((b) => b.id_barba === normalizado.barba.id_barba) : null);
+    setSobrancelha(normalizado.sobrancelha ? dataSobrancelhas.find((s) => s.id_sobrancelha === normalizado.sobrancelha.id_sobrancelha) : null);
+    setAdicional(normalizado.adicional ? dataAdicionais.find((a) => a.id_adicional === normalizado.adicional.id_adicional) : null);
+    setFormaPagamento(normalizado.formaPagamento ? dataFormasPagamento.find((f) => f.id_forma_pagamento === normalizado.formaPagamento.id_forma_pagamento) : null);
+  }, [editar, dataServico, dataCabelos, dataBarbas, dataSobrancelhas, dataAdicionais, dataFormasPagamento]);
+
   return (
     <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-      <AlertDialogDemo isModalOpen={isModalExluir} setIsModalOpen={setIsModalExcluir} />
+      <AlertDialogDemo
+        isModalOpen={isModalExcluir}
+        setIsModalOpen={setIsModalExcluir}
+        titulo="ATENÇÃO"
+        descricao="Tem certeza que deseja excluir esse serviço?"
+        variant="destructive"
+        cancelar="Cancelar"
+        confirmar="Excluir"
+        onClick={handleExcluir}
+      />
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle className="heading-2 text-center">{editar ? "Editar Serviço" : "Adicionar Serviço"}</DialogTitle>
@@ -129,10 +170,10 @@ export function ModalServico({ editar, isModalOpen, setIsModalOpen,dataServico  
             <label htmlFor="cabelo" className="text-body-bold">
               Cabelo
             </label>
-            <select  value={cabelo ? JSON.stringify(cabelo) : ""} onChange={(e) => setCabelo(JSON.parse(e.target.value))} id="cabelo" className="input-base h-10">
-              <option value={0}></option>
+            <select value={cabelo?.id_cabelo || ""} onChange={(e) => setCabelo(dataCabelos.find((c) => c.id_cabelo === Number(e.target.value)))} id="cabelo" className="input-base h-10">
+              <option value="">Selecione</option>
               {dataCabelos.map((item) => (
-                <option key={item.id_cabelo} value={JSON.stringify(item)}>
+                <option key={item.id_cabelo} value={item.id_cabelo}>
                   {item.nome_cabelo} (R$ {item.valor_cabelo})
                 </option>
               ))}
@@ -144,10 +185,10 @@ export function ModalServico({ editar, isModalOpen, setIsModalOpen,dataServico  
             <label htmlFor="barba" className="text-body-bold">
               Barba
             </label>
-            <select onChange={(e) => setBarba(JSON.parse(e.target.value))} id="barba" className="input-base h-10">
-              <option value={0}></option>
+            <select value={barba?.id_barba || ""} onChange={(e) => setBarba(dataBarbas.find((b) => b.id_barba === Number(e.target.value)))} id="barba" className="input-base h-10">
+              <option value="">Selecione</option>
               {dataBarbas.map((item) => (
-                <option key={item.id_barba} value={JSON.stringify(item)}>
+                <option key={item.id_barba} value={item.id_barba}>
                   {item.nome_barba} (R$ {item.valor_barba})
                 </option>
               ))}
@@ -159,10 +200,15 @@ export function ModalServico({ editar, isModalOpen, setIsModalOpen,dataServico  
             <label htmlFor="sobrancelha" className="text-body-bold">
               Sobrancelha
             </label>
-            <select onChange={(e) => setSobrancelha(JSON.parse(e.target.value))} id="sobrancelha" className="input-base h-10">
-              <option value={0}></option>
+            <select
+              value={sobrancelha?.id_sobrancelha || ""}
+              onChange={(e) => setSobrancelha(dataSobrancelhas.find((s) => s.id_sobrancelha === Number(e.target.value)))}
+              id="sobrancelha"
+              className="input-base h-10"
+            >
+              <option value="">Selecione</option>
               {dataSobrancelhas.map((item) => (
-                <option key={item.id_sobrancelha} value={JSON.stringify(item)}>
+                <option key={item.id_sobrancelha} value={item.id_sobrancelha}>
                   {item.nome_sobrancelha} (R$ {item.valor_sobrancelha})
                 </option>
               ))}
@@ -174,10 +220,15 @@ export function ModalServico({ editar, isModalOpen, setIsModalOpen,dataServico  
             <label htmlFor="adicional" className="text-body-bold">
               Adicional
             </label>
-            <select onChange={(e) => setAdicional(JSON.parse(e.target.value))} id="adicional" className="input-base h-10">
-              <option value={0}></option>
+            <select
+              value={adicional?.id_adicional || ""}
+              onChange={(e) => setAdicional(dataAdicionais.find((a) => a.id_adicional === Number(e.target.value)))}
+              id="adicional"
+              className="input-base h-10"
+            >
+              <option value="">Selecione</option>
               {dataAdicionais.map((item) => (
-                <option key={item.id_adicional} value={JSON.stringify(item)}>
+                <option key={item.id_adicional} value={item.id_adicional}>
                   {item.nome_adicional} (R$ {item.valor_adicional})
                 </option>
               ))}
@@ -189,10 +240,15 @@ export function ModalServico({ editar, isModalOpen, setIsModalOpen,dataServico  
             <label htmlFor="pagamento" className="text-body-bold">
               Pagamento
             </label>
-            <select onChange={(e) => setFormaPagamento(JSON.parse(e.target.value))} id="pagamento" className="input-base h-10">
-              <option value={0}></option>
+            <select
+              value={formaPagamento?.id_forma_pagamento || ""}
+              onChange={(e) => setFormaPagamento(dataFormasPagamento.find((f) => f.id_forma_pagamento === Number(e.target.value)))}
+              id="pagamento"
+              className="input-base h-10"
+            >
+              <option value="">Selecione</option>
               {dataFormasPagamento.map((item) => (
-                <option key={item.id_forma_pagamento} value={JSON.stringify(item)}>
+                <option key={item.id_forma_pagamento} value={item.id_forma_pagamento}>
                   {item.nome_pagamento}
                 </option>
               ))}
@@ -218,13 +274,13 @@ export function ModalServico({ editar, isModalOpen, setIsModalOpen,dataServico  
             <DialogClose asChild>
               <button className="botao-base bg-text-secondary text-white w-full py-2 px-4">Cancelar</button>
             </DialogClose>
-            <button onClick={handleConfimar} type="submit" className="botao-base bg-brand-primary text-white w-full py-2 px-4">
+            <button onClick={handleConfirmar} type="submit" className="botao-base bg-brand-primary text-white w-full py-2 px-4">
               Confirmar
             </button>
           </section>
 
           {editar && (
-            <button type="button" className="botao-base bg-feedback-error text-white w-full py-2 px-4">
+            <button type="button" onClick={() => setIsModalExcluir(true)} className="botao-base bg-feedback-error text-white w-full py-2 px-4">
               Excluir
             </button>
           )}

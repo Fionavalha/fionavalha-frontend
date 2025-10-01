@@ -65,27 +65,27 @@ export default function Ajustes() {
       <ModalDespesa isOpen={isModalDespesa} setIsOpen={setIsModalDespesa} editar={isEditar} onClick={handleSubmitDespesa} />
       <section className="flex flex-col mt-2 items-center gap-y-5 min-h-screen">
         <h2 className="text-white heading-2">Serviços</h2>
-        <section className="flex flex-col gap-y-4">
+        <section className="flex flex-col gap-y-4 w-full items-center">
           {dataCabelos?.map((item) => (
-            <CardServico key={item?.id_cabelo} tipoCorte={item?.nome_cabelo} valor={item?.valor_cabelo} />
+            <CardServico key={item?.id_cabelo} nome={item?.nome_cabelo} valor={item?.valor_cabelo} />
           ))}
 
           {dataBarbas?.map((item) => (
-            <CardServico key={item?.id_barba} tipoCorte={item?.nome_barba} valor={item?.valor_barba} />
+            <CardServico key={item?.id_barba} nome={item?.nome_barba} valor={item?.valor_barba} />
           ))}
 
           {dataSobrancelhas?.map((item) => (
-            <CardServico key={item?.id_sobrancelha} tipoCorte={item?.nome_sobrancelha} valor={item?.valor_sobrancelha} />
+            <CardServico key={item?.id_sobrancelha} nome={item?.nome_sobrancelha} valor={item?.valor_sobrancelha} />
           ))}
 
           {dataAdicionais?.map((item) => (
-            <CardServico key={item?.id_adicional} tipoCorte={item?.nome_adicional} valor={item?.valor_adicional} />
+            <CardServico key={item?.id_adicional} nome={item?.nome_adicional} valor={item?.valor_adicional} />
           ))}
         </section>
         <h2 className="text-white heading-2">Despesas</h2>
-        <section className="flex flex-col gap-4">
+        <section className="flex flex-col gap-4 w-full items-center">
           {dataDespesas?.despesas?.map((item) => (
-            <CardServico tipoCorte={item?.nome_despesa} valor={item?.valor_despesa} />
+            <CardServico tipo="despesa" nome={item?.nome_despesa} valor={item?.valor_despesa} />
           ))}
         </section>
         <section className="flex w-full justify-end">
