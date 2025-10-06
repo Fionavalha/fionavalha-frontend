@@ -19,7 +19,7 @@ export default function HomeHero() {
           <h1 className="heading-1 text-center leading-10 sm:leading-16 text-white">
             BARBEARIA <br /> FIO NAVALHA
           </h1>
-          <h3 className="text-body-bold text-white">
+          <h3 className="text-body-bold text-white text-center">
             Horário de funcionamento: <strong>08:00</strong> ás <strong>18:00</strong>
           </h3>
           <div>

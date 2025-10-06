@@ -34,9 +34,9 @@ export default function HomeServicos() {
 
           <section className="flex flex-col">
             <div className="flex flex-wrap justify-center gap-5">
-              {cortesCabelos.map((item) => (
+              {/* {cortesCabelos.map((item) => (
                 <HomeCardCorte key={item.id_cabelo} nome={item.nome_cabelo} alt={item.nome_cabelo} img={corte1} preco={formatarDinheiro(item.valor_cabelo)} />
-              ))}
+              ))} */}
             </div>
           </section>
         </div>

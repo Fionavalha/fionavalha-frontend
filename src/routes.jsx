@@ -4,6 +4,8 @@ import Home from "./pages/Home";
 import Inicio from "./pages/Inicio";
 import Financas from "./pages/Financas";
 import Ajustes from "./pages/Ajustes";
+import AlterarSenha from "./pages/AlterarSenha";
+import ProtectedRoute from "./utils/ProtectedRoute";
 
 const routerApp = createBrowserRouter([
   {
@@ -12,19 +14,39 @@ const routerApp = createBrowserRouter([
   },
   {
     path: "/inicio",
-    element: <Inicio />,
+    element: (
+      <ProtectedRoute>
+        <Inicio />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/financas",
-    element: <Financas />,
+    element: (
+      <ProtectedRoute>
+        <Financas />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/ajustes",
-    element: <Ajustes />,
+    element: (
+      <ProtectedRoute>
+        <Ajustes />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/alterar-senha",
+    element: (
+      <ProtectedRoute>
+        <AlterarSenha />
+      </ProtectedRoute>
+    ),
   },
 ]);
 

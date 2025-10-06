@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import ModalCorte from "../../components/Modals/ModalCorte";
 import ModalDespesa from "../../components/Modals/ModalDespesa";
+import { replace, useNavigate } from "react-router";
 
 export default function Ajustes() {
   const [dataCabelos, setDataCabelos] = useState([]);
@@ -17,6 +18,7 @@ export default function Ajustes() {
   const [isModalCorte, setIsModalCorte] = useState(false);
   const [isModalDespesa, setIsModalDespesa] = useState(false);
   const [isEditar, setIsEditar] = useState(false);
+  const navigate = useNavigate();
 
   async function listarCabelos() {
     const response = await consultarCabelos();
@@ -87,6 +89,15 @@ export default function Ajustes() {
           {dataDespesas?.despesas?.map((item) => (
             <CardServico tipo="despesa" nome={item?.nome_despesa} valor={item?.valor_despesa} />
           ))}
+        </section>
+        <h2 className="text-white heading-2">Configurações</h2>
+        <section className="flex items-center flex-col w-full gap-4">
+          <Button onClick={() => navigate("/alterar-senha")} variant="outline" className="w-9/10 max-w-90">
+            Alterar Senha
+          </Button>
+          <Button onClick={() => navigate("/login", replace)} variant="outline" className="w-9/10 max-w-90">
+            Sair
+          </Button>
         </section>
         <section className="flex w-full justify-end">
           <div className="flex gap-4 h-20">

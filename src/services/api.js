@@ -1,11 +1,23 @@
 import axios from "axios";
 
 export const api = axios.create({
-  baseURL: "http://10.5.33.103:3000",
-  headers: {
-    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJub21lIjoiUElOSkEiLCJpYXQiOjE3NTg3NTc0MjJ9.pjiGI1Ql0bwi3Mf3W19YjJUofP6IpDBLfx4vfL3DvE0`,
-  },
+  baseURL: "http://192.168.2.102:3000",
 });
+
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 export async function efetuarLogin(pNomeBarbeiro, pSenha) {
   try {
@@ -13,11 +25,29 @@ export async function efetuarLogin(pNomeBarbeiro, pSenha) {
       nome_barbeiro: pNomeBarbeiro,
       senha: pSenha,
     });
+    localStorage.setItem("token", response.data.token);
+    localStorage.setItem("id_barbeiro", response.data.id_barbeiro);
+    localStorage.setItem("nome_barbeiro", response.data.nome_barbeiro);
 
     return response.data;
   } catch (error) {
     console.error(error);
     throw error.response?.data?.erro || "Falha na comunicação com servidor";
+  }
+}
+
+export async function alterarSenha(pIdBarbeiro, pSenhaAntiga, pSenhaNova) {
+  try {
+    const response = await api.post("/alterar-senha", {
+      id_barbeiro: pIdBarbeiro,
+      senha_antiga: pSenhaAntiga,
+      senha_nova: pSenhaNova,
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error.response?.data?.mensagem || "Falha na comunicação com o servidor";
   }
 }
 
