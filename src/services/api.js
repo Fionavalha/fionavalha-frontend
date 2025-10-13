@@ -175,3 +175,22 @@ export async function consultarDespesas(dataInicial = "", dataFinal = "") {
     console.error(error);
   }
 }
+
+export async function alterarNumeroClientes(id_barbeiro, numero_clientes) {
+  try {
+    await api.put(`/barbearias/numero-clientes/${id_barbeiro}`, {
+      numero_clientes,
+    });
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function consultarNumeroClientes() {
+  try {
+    const response = await api.get(`/barbearias/numero-clientes/1`);
+    return response.data.numero_clientes;
+  } catch (error) {
+    console.error(error);
+  }
+}

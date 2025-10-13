@@ -19,11 +19,7 @@ export default function Inicio() {
     setDataSevicos(response);
   }
   function handleStatus() {
-    if (!aberto) {
-      setAberto(true);
-    } else {
-      setAberto(false);
-    }
+    setAberto(!aberto);
   }
   async function handleEditar(id) {
     const response = await consultarItensServicoRealizado(id);
@@ -43,32 +39,32 @@ export default function Inicio() {
     <>
       {openModal && <ModalServico isModalOpen={openModal} setIsModalOpen={setOpenModal} editar={isEditar} dataServico={dataServico} />}
 
-      <div className="flex flex-col h-dvh relative">
-        <Link to="/login" className="p-2">
-          <LogOut className="text-text-secondary cursor-pointer hover:text-brand-primary w-10 h-10" />
-        </Link>
-        <section className="flex flex-col gap-y-5 ">
-          <section className="flex flex-col items-center ">
-            <div className="flex flex-col gap-y-7 w-70 h-auto  ">
-              <h1 className="text-center heading-1 text-white ">
+      <div className="flex flex-col h-dvh relative mt-4">
+        <section className="flex flex-col gap-y-4">
+          <section className="flex flex-col items-center">
+            <div className="flex flex-col gap-2 w-70 h-auto">
+              <h1 className="text-center heading-1 text-white">
                 Barbearia <br /> Fio Navalha
               </h1>
               <div className="flex justify-center">
                 <button
                   onClick={handleStatus}
-                  className={`flex flex-col items-center justify-center rounded-xl border text-white w-35 h-9 transition
-            ${aberto ? "bg-feedback-success cursor-pointer border-feedback-success" : "bg-feedback-error border-feedback-error"}`}
+                  className={`
+                    flex flex-col items-center justify-center rounded-xl border text-white w-35 h-9 transition
+                    ${aberto ? "bg-feedback-success cursor-pointer border-feedback-success" : "bg-feedback-error border-feedback-error"}
+                  `}
                 >
                   {aberto ? "Aberto" : "Fechado"}
                 </button>
               </div>
             </div>
           </section>
-          <div className="flex justify-center ">
+
+          <div className="flex justify-center">
             <Contador />
           </div>
 
-          <section className="flex flex-col gap-y-3 items-center overflow-y-auto h-113 ">
+          <section className="flex flex-col gap-y-3 items-center overflow-y-auto h-113">
             {dataServicos.map((item) => (
               <CardServico
                 onClick={handleEditar}

@@ -4,10 +4,11 @@ import { consultarAdicionais, consultarBarbas, consultarCabelos, consultarDespes
 import CardServico from "../../components/CardServico";
 import Rodape from "../../components/Rodape";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import { LogOut, Plus } from "lucide-react";
 import ModalCorte from "../../components/Modals/ModalCorte";
 import ModalDespesa from "../../components/Modals/ModalDespesa";
 import { replace, useNavigate } from "react-router";
+import { Lock } from "lucide-react";
 
 export default function Ajustes() {
   const [dataCabelos, setDataCabelos] = useState([]);
@@ -93,9 +94,11 @@ export default function Ajustes() {
         <h2 className="text-white heading-2">Configurações</h2>
         <section className="flex items-center flex-col w-full gap-4">
           <Button onClick={() => navigate("/alterar-senha")} variant="outline" className="w-9/10 max-w-90">
+            <Lock />
             Alterar Senha
           </Button>
           <Button onClick={() => navigate("/login", replace)} variant="outline" className="w-9/10 max-w-90">
+            <LogOut />
             Sair
           </Button>
         </section>

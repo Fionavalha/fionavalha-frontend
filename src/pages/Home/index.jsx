@@ -1,4 +1,3 @@
-import React from "react";
 import HomeHero from "./components/HomeHero";
 import HomeSobre from "./components/HomeSobre";
 import HomeServicos from "./components/HomeServicos";
@@ -18,11 +17,7 @@ export default function Home() {
 
         <Tooltip>
           <TooltipTrigger asChild>
-            <a
-              href="https://api.whatsapp.com/send?phone=5567999456400&text=Quero%20fazer%20um%20agendamento%20hoje!"
-              className="fixed bottom-8 right-4 w-16 h-16"
-              target="_blank"
-            >
+            <a href="https://api.whatsapp.com/send?phone=5567999456400&text=Quero%20fazer%20um%20agendamento%20hoje!" className="fixed bottom-8 right-4 w-16 h-16" target="_blank">
               <img src={whatsapp} alt="Botao whatsapp" />
             </a>
           </TooltipTrigger>

@@ -5,7 +5,7 @@ export default function CardServico({ nome, horario, valor, formaPagamento, id_s
         onClick={() => {
           onClick(id_servico);
         }}
-        className="w-9/10 max-w-90 h-auto rounded-lg bg-white p-2 cursor-pointer"
+        className="w-9/10 max-w-90 h-auto rounded-lg bg-white p-2 cursor-pointer shadow-md"
       >
         <div className="flex justify-between items-center">
           <p className="text-text-primary text-body-bold">{nome}</p>
