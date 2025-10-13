@@ -194,3 +194,22 @@ export async function consultarNumeroClientes() {
     console.error(error);
   }
 }
+
+export async function consultarStatusBarbearia() {
+  try {
+    const response = await api.get(`/barbearias/status/1`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function alterarStatusBarbearia(id_barbeiro, status) {
+  try {
+    await api.put(`/barbearias/status/${id_barbeiro}`, {
+      status,
+    });
+  } catch (error) {
+    console.error(error);
+  }
+}

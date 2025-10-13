@@ -1,6 +1,16 @@
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 
-export function AlertDialogDemo({ isModalOpen, setIsModalOpen, titulo = "", descricao = "", cancelar = "", confirmar = "", variant = "default", onClick = () => {} }) {
+export function AlertaConfirmacao({
+  isModalOpen,
+  setIsModalOpen,
+  titulo = "",
+  descricao = "",
+  cancelar = "Cancelar",
+  confirmar = "Confirmar",
+  variant = "default",
+  onConfirm = () => {},
+  onCancel = () => {},
+}) {
   return (
     <AlertDialog open={isModalOpen} onOpenChange={setIsModalOpen}>
       <AlertDialogContent>
@@ -8,9 +18,10 @@ export function AlertDialogDemo({ isModalOpen, setIsModalOpen, titulo = "", desc
           <AlertDialogTitle>{titulo}</AlertDialogTitle>
           <AlertDialogDescription>{descricao}</AlertDialogDescription>
         </AlertDialogHeader>
+
         <AlertDialogFooter>
-          <AlertDialogCancel>{cancelar}</AlertDialogCancel>
-          <AlertDialogAction onClick={onClick} variant={variant}>
+          <AlertDialogCancel onClick={onCancel}>{cancelar}</AlertDialogCancel>
+          <AlertDialogAction onClick={onConfirm} variant={variant}>
             {confirmar}
           </AlertDialogAction>
         </AlertDialogFooter>
@@ -18,3 +29,4 @@ export function AlertDialogDemo({ isModalOpen, setIsModalOpen, titulo = "", desc
     </AlertDialog>
   );
 }
+

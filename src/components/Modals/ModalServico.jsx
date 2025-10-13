@@ -10,7 +10,7 @@ import {
   excluirServicoRealizado,
 } from "../../services/api";
 import { useEffect, useState } from "react";
-import { AlertDialogDemo } from "../Alert";
+import { AlertaConfirmacao } from "../AlertaConfirmacao";
 import { toast } from "sonner";
 
 export function ModalServico({ editar, isModalOpen, setIsModalOpen, dataServico }) {
@@ -148,16 +148,19 @@ export function ModalServico({ editar, isModalOpen, setIsModalOpen, dataServico 
 
   return (
     <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-      <AlertDialogDemo
+
+      <AlertaConfirmacao
         isModalOpen={isModalExcluir}
         setIsModalOpen={setIsModalExcluir}
-        titulo="ATENÇÃO"
+        titulo="Atenção"
         descricao="Tem certeza que deseja excluir esse serviço?"
-        variant="destructive"
+        confirmar="Confirmar"
         cancelar="Cancelar"
-        confirmar="Excluir"
-        onClick={handleExcluir}
+        variant="destructive"
+        onConfirm={handleExcluir}
+        onCancel={() => setIsModalExcluir(false)}
       />
+
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle className="heading-2 text-center">{editar ? "Editar Serviço" : "Adicionar Serviço"}</DialogTitle>

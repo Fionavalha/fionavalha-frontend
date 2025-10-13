@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import logoBarbearia from "../../../assets/images/logo_barbearia_fionavalha.png";
 import { CircleUserRound } from "lucide-react";
 import { Link } from "react-router";
-import { consultarNumeroClientes } from "../../../services/api";
+import { consultarNumeroClientes, consultarStatusBarbearia } from "../../../services/api";
 
 export default function HomeHero() {
   const [isSalaoAberto, setIsSalaoAberto] = useState(true);
@@ -10,13 +10,22 @@ export default function HomeHero() {
 
   async function listarNumeroClientes() {
     const response = await consultarNumeroClientes();
-    console.log(response);
-    
     setNumeroClientes(response ?? 0);
+  }
+
+  async function listarStatusBarbearia() {
+    const response = await consultarStatusBarbearia();
+
+    if (response?.status === "ABERTO") {
+      setIsSalaoAberto(true);
+    } else {
+      setIsSalaoAberto(false);
+    }
   }
 
   useEffect(() => {
     listarNumeroClientes();
+    listarStatusBarbearia();
   }, []);
 
   return (
