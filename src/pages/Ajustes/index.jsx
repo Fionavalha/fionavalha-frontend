@@ -93,7 +93,7 @@ export default function Ajustes() {
         </section>
         <h2 className="text-white heading-2">Configurações</h2>
         <section className="flex items-center flex-col w-full gap-4">
-          <Button onClick={() => navigate("/alterar-senha")} variant="outline" className="w-9/10 max-w-90">
+          <Button variant="outline" className="w-9/10 max-w-90">
             <Coins />
             Alterar Val. Adicionais Pagamento
           </Button>
