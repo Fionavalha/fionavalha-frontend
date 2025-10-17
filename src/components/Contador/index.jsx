@@ -1,9 +1,8 @@
 import { CircleMinus, CirclePlus } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { alterarNumeroClientes, consultarNumeroClientes } from "../../services/api";
 
-export default function Contador() {
-  const [contador, setContador] = useState(0);
+export default function Contador({contador, setContador}) {
 
   function aumentar() {
     setContador((prev) => {

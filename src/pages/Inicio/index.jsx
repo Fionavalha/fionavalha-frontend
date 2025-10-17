@@ -4,9 +4,10 @@ import Contador from "../../components/Contador";
 import Rodape from "../../components/Rodape";
 import { useEffect, useState } from "react";
 import { ModalServico } from "../../components/Modals/ModalServico";
-import { alterarStatusBarbearia, consultarItensServicoRealizado, consultarServicosRealizados, consultarStatusBarbearia } from "../../services/api";
+import { alterarNumeroClientes, alterarStatusBarbearia, consultarItensServicoRealizado, consultarServicosRealizados, consultarStatusBarbearia } from "../../services/api";
 import CardServico from "../../components/CardServico";
 import { AlertaConfirmacao } from "../../components/AlertaConfirmacao";
+import { formatarDataISO } from "../../utils/formatador";
 
 export default function Inicio() {
   const [aberto, setAberto] = useState(false);
@@ -15,9 +16,11 @@ export default function Inicio() {
   const [isEditar, setIsEditar] = useState(false);
   const [dataServico, setDataServico] = useState([]);
   const [showConfirmacaoFechar, setShowConfirmacaoFechar] = useState(false);
+  const [contador, setContador] = useState(0);
 
   async function listarServicosRealizados() {
-    const response = await consultarServicosRealizados();
+    const hoje = new Date();
+    const response = await consultarServicosRealizados(formatarDataISO(hoje));
     setDataSevicos(response);
   }
 
@@ -25,9 +28,18 @@ export default function Inicio() {
     setAberto((prev) => {
       const novoStatus = !prev;
       const statusTexto = novoStatus ? "ABERTO" : "FECHADO";
-      alterarStatusBarbearia(localStorage.getItem("id_barbeiro"), statusTexto);
+      alterarStatusBarbearia(statusTexto);
+      setContador(0);
+      resetarNumeroClientes();
       return novoStatus;
     });
+  }
+
+  async function resetarNumeroClientes() {
+    const idBarbeiro = localStorage.getItem("id_barbeiro");
+    if (idBarbeiro) {
+      await alterarNumeroClientes(0);
+    }
   }
 
   async function handleEditar(id) {
@@ -93,10 +105,11 @@ export default function Inicio() {
             </div>
           </section>
 
-          <div className="flex justify-center">
-            <Contador />
-          </div>
-
+          {aberto && (
+            <div className="flex justify-center">
+              <Contador contador={contador} setContador={setContador} />
+            </div>
+          )}
           <section className="flex flex-col gap-y-3 items-center overflow-y-auto h-113">
             {dataServicos.map((item) => (
               <CardServico

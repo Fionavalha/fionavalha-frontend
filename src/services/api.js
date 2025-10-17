@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const api = axios.create({
-  baseURL: "http://192.168.2.102:3000",
+  baseURL: "http://192.168.2.103:3000",
 });
 
 api.interceptors.request.use(
@@ -113,9 +113,9 @@ export async function adicionarServicoRealizado(pFormaPagamentoId, pValorTotal, 
     throw error.response?.data?.erro || "Falha ao confimar o serviço";
   }
 }
-export async function consultarServicosRealizados() {
+export async function consultarServicosRealizados(data = "") {
   try {
-    const response = await api.get("/servicos-realizados");
+    const response = await api.get(`/servicos-realizados?data=${data}`);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -176,9 +176,9 @@ export async function consultarDespesas(dataInicial = "", dataFinal = "") {
   }
 }
 
-export async function alterarNumeroClientes(id_barbeiro, numero_clientes) {
+export async function alterarNumeroClientes(numero_clientes) {
   try {
-    await api.put(`/barbearias/numero-clientes/${id_barbeiro}`, {
+    await api.put(`/barbearias/numero-clientes`, {
       numero_clientes,
     });
   } catch (error) {
@@ -188,7 +188,7 @@ export async function alterarNumeroClientes(id_barbeiro, numero_clientes) {
 
 export async function consultarNumeroClientes() {
   try {
-    const response = await api.get(`/barbearias/numero-clientes/1`);
+    const response = await api.get(`/barbearias/numero-clientes`);
     return response.data.numero_clientes;
   } catch (error) {
     console.error(error);
@@ -197,16 +197,16 @@ export async function consultarNumeroClientes() {
 
 export async function consultarStatusBarbearia() {
   try {
-    const response = await api.get(`/barbearias/status/1`);
+    const response = await api.get(`/barbearias/status`);
     return response.data;
   } catch (error) {
     console.error(error);
   }
 }
 
-export async function alterarStatusBarbearia(id_barbeiro, status) {
+export async function alterarStatusBarbearia(status) {
   try {
-    await api.put(`/barbearias/status/${id_barbeiro}`, {
+    await api.put(`/barbearias/status`, {
       status,
     });
   } catch (error) {

@@ -31,9 +31,13 @@ export function ModalServico({ editar, isModalOpen, setIsModalOpen, dataServico 
 
   const [isModalExcluir, setIsModalExcluir] = useState(false);
 
-  const adicionalCartao = formaPagamento?.id_forma_pagamento === 3 ? 2 : formaPagamento?.id_forma_pagamento === 4 && 2;
+  const adicionalValorPagamento = formaPagamento?.adicional_forma_pagamento || 0;
   const valorTotal =
-    Number(cabelo?.valor_cabelo || 0) + Number(barba?.valor_barba || 0) + Number(sobrancelha?.valor_sobrancelha || 0) + Number(adicional?.valor_adicional || 0) + Number(adicionalCartao || 0);
+    Number(cabelo?.valor_cabelo || 0) +
+    Number(barba?.valor_barba || 0) +
+    Number(sobrancelha?.valor_sobrancelha || 0) +
+    Number(adicional?.valor_adicional || 0) +
+    Number(adicionalValorPagamento || 0);
 
   function verificarCampo() {
     if (!cabelo && !barba && !sobrancelha && !adicional) {
@@ -148,7 +152,6 @@ export function ModalServico({ editar, isModalOpen, setIsModalOpen, dataServico 
 
   return (
     <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-
       <AlertaConfirmacao
         isModalOpen={isModalExcluir}
         setIsModalOpen={setIsModalExcluir}
