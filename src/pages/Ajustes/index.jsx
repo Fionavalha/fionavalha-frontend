@@ -4,8 +4,7 @@ import { consultarAdicionais, consultarBarbas, consultarCabelos, consultarDespes
 import CardServico from "../../components/CardServico";
 import Rodape from "../../components/Rodape";
 import { Button } from "@/components/ui/button";
-import { Coins, LogOut, Plus } from "lucide-react";
-import ModalCorte from "../../components/Modals/ModalCorte";
+import { CalendarClock, Coins, LogOut, Plus } from "lucide-react";
 import ModalDespesa from "../../components/Modals/ModalDespesa";
 import { replace, useNavigate } from "react-router";
 import { Lock } from "lucide-react";
@@ -16,7 +15,6 @@ export default function Ajustes() {
   const [dataSobrancelhas, setDataSobrancelhas] = useState([]);
   const [dataAdicionais, setDataAdicionais] = useState([]);
   const [dataDespesas, setDataDespesas] = useState([]);
-  const [isModalCorte, setIsModalCorte] = useState(false);
   const [isModalDespesa, setIsModalDespesa] = useState(false);
   const [isEditar, setIsEditar] = useState(false);
   const navigate = useNavigate();
@@ -46,10 +44,6 @@ export default function Ajustes() {
     setDataDespesas(response);
   }
 
-  async function handleSubmitCorte(e) {
-    e.preventDefault();
-  }
-
   async function handleSubmitDespesa(e) {
     e.preventDefault();
   }
@@ -64,7 +58,6 @@ export default function Ajustes() {
 
   return (
     <>
-      <ModalCorte isOpen={isModalCorte} setIsOpen={setIsModalCorte} editar={isEditar} onClick={handleSubmitCorte} />
       <ModalDespesa isOpen={isModalDespesa} setIsOpen={setIsModalDespesa} editar={isEditar} onClick={handleSubmitDespesa} />
       <section className="flex flex-col mt-2 items-center gap-y-5 min-h-screen">
         <h2 className="text-white heading-2">Serviços</h2>
@@ -94,6 +87,10 @@ export default function Ajustes() {
         <h2 className="text-white heading-2">Configurações</h2>
         <section className="flex items-center flex-col w-full gap-4">
           <Button variant="outline" className="w-9/10 max-w-90">
+            <CalendarClock />
+            Alterar Horário de Funcionamento
+          </Button>
+          <Button variant="outline" className="w-9/10 max-w-90">
             <Coins />
             Alterar Val. Adicionais Pagamento
           </Button>
@@ -107,12 +104,9 @@ export default function Ajustes() {
           </Button>
         </section>
         <section className="flex w-full justify-end">
-          <div className="flex gap-4 h-20">
-            <Button onClick={() => setIsModalDespesa(true)} variant="destructive" className="fixed bottom-11 right-30">
+          <div className="h-20">
+            <Button onClick={() => setIsModalDespesa(true)} variant="destructive" className="fixed bottom-11 right-1">
               <Plus /> Despesa
-            </Button>
-            <Button onClick={() => setIsModalCorte(true)} className="fixed bottom-11 right-2">
-              <Plus /> Serviço
             </Button>
           </div>
         </section>

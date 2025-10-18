@@ -2,8 +2,7 @@ import { CircleMinus, CirclePlus } from "lucide-react";
 import { useEffect } from "react";
 import { alterarNumeroClientes, consultarNumeroClientes } from "../../services/api";
 
-export default function Contador({contador, setContador}) {
-
+export default function Contador({ contador, setContador }) {
   function aumentar() {
     setContador((prev) => {
       const novoValor = Math.min(prev + 1, 100);
@@ -13,6 +12,7 @@ export default function Contador({contador, setContador}) {
   }
 
   function diminuir() {
+    if (contador === 0) return;
     setContador((prev) => {
       const novoValor = Math.max(prev - 1, 0);
       atualizarNumeroClientes(novoValor);
@@ -21,10 +21,7 @@ export default function Contador({contador, setContador}) {
   }
 
   async function atualizarNumeroClientes(pContador) {
-    const idBarbeiro = localStorage.getItem("id_barbeiro");
-    if (idBarbeiro) {
-      await alterarNumeroClientes(idBarbeiro, pContador);
-    }
+    await alterarNumeroClientes(pContador);
   }
 
   async function listarNumeroClientes() {

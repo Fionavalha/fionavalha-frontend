@@ -36,10 +36,8 @@ export default function Inicio() {
   }
 
   async function resetarNumeroClientes() {
-    const idBarbeiro = localStorage.getItem("id_barbeiro");
-    if (idBarbeiro) {
-      await alterarNumeroClientes(0);
-    }
+    await alterarNumeroClientes(0);
+    setContador(0);
   }
 
   async function handleEditar(id) {

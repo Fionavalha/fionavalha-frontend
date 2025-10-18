@@ -12,7 +12,7 @@ export default function AlterarSenha() {
   async function handleTrocarSenha(e) {
     e.preventDefault();
     try {
-      const response = await alterarSenha(localStorage.getItem("id_barbeiro"), senhaAntiga, senhaNova);
+      const response = await alterarSenha(senhaAntiga, senhaNova);
       toast.success(response.mensagem);
       navigate("/inicio");
     } catch (error) {

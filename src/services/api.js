@@ -26,7 +26,6 @@ export async function efetuarLogin(pNomeBarbeiro, pSenha) {
       senha: pSenha,
     });
     localStorage.setItem("token", response.data.token);
-    localStorage.setItem("id_barbeiro", response.data.id_barbeiro);
     localStorage.setItem("nome_barbeiro", response.data.nome_barbeiro);
 
     return response.data;
@@ -36,10 +35,9 @@ export async function efetuarLogin(pNomeBarbeiro, pSenha) {
   }
 }
 
-export async function alterarSenha(pIdBarbeiro, pSenhaAntiga, pSenhaNova) {
+export async function alterarSenha(pSenhaAntiga, pSenhaNova) {
   try {
     const response = await api.post("/alterar-senha", {
-      id_barbeiro: pIdBarbeiro,
       senha_antiga: pSenhaAntiga,
       senha_nova: pSenhaNova,
     });
@@ -181,6 +179,15 @@ export async function alterarNumeroClientes(numero_clientes) {
     await api.put(`/barbearias/numero-clientes`, {
       numero_clientes,
     });
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function consultarBarbearias() {
+  try {
+    const response = await api.get(`/barbearias`);
+    return response.data;
   } catch (error) {
     console.error(error);
   }

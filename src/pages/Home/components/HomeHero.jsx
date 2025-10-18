@@ -1,33 +1,8 @@
-import React, { useEffect, useState } from "react";
 import logoBarbearia from "../../../assets/images/logo_barbearia_fionavalha.png";
 import { CircleUserRound } from "lucide-react";
 import { Link } from "react-router";
-import { consultarNumeroClientes, consultarStatusBarbearia } from "../../../services/api";
 
-export default function HomeHero() {
-  const [isSalaoAberto, setIsSalaoAberto] = useState(true);
-  const [numeroClientes, setNumeroClientes] = useState(0);
-
-  async function listarNumeroClientes() {
-    const response = await consultarNumeroClientes();
-    setNumeroClientes(response ?? 0);
-  }
-
-  async function listarStatusBarbearia() {
-    const response = await consultarStatusBarbearia();
-
-    if (response?.status === "ABERTO") {
-      setIsSalaoAberto(true);
-    } else {
-      setIsSalaoAberto(false);
-    }
-  }
-
-  useEffect(() => {
-    listarNumeroClientes();
-    listarStatusBarbearia();
-  }, []);
-
+export default function HomeHero({ numeroClientes, isSalaoAberto, horarioInicio, horarioFim }) {
   return (
     <section className="flex flex-col bg-[url('../assets/images/bg.svg')] bg-gradient-to-b from-[rgba(6,18,30,0.1)] bg-no-repeat to-[#06121e] min-h-svh">
       <header className="flex justify-end w-full p-6">
@@ -42,7 +17,7 @@ export default function HomeHero() {
           BARBEARIA <br /> FIO NAVALHA
         </h1>
         <h3 className="text-body-bold text-white text-center">
-          Horário de funcionamento: <strong>08:00</strong> às <strong>18:00</strong>
+          Horário de funcionamento: <strong>{horarioInicio}</strong> às <strong>{horarioFim}</strong>
         </h3>
 
         <div>
