@@ -174,6 +174,11 @@ export async function consultarDespesas(dataInicial = "", dataFinal = "") {
   }
 }
 
+export async function consultarDespesa(id) {
+  try {
+    let response;
+    response = await api.get(`/despesas/` + id);
+    return response.data;
 export async function alterarNumeroClientes(numero_clientes) {
   try {
     await api.put(`/barbearias/numero-clientes`, {
@@ -184,6 +189,16 @@ export async function alterarNumeroClientes(numero_clientes) {
   }
 }
 
+
+export async function editarDespesa(id, pNomeDespesa, pValorDespesa,pDataDespesa, pFixa) {
+  try {
+    await api.put("/despesas/" + id, {
+      nome_despesa: pNomeDespesa,
+      valor_despesa: pValorDespesa,
+      data_despesa: pDataDespesa || null,
+      fixa: pFixa
+
+    });
 export async function consultarBarbearias() {
   try {
     const response = await api.get(`/barbearias`);
@@ -202,6 +217,27 @@ export async function consultarNumeroClientes() {
   }
 }
 
+export async function adicionarDespesaRealizada(pNomeDespesa, pValorDespesa, pDataDespesa, pFixa) {
+  try {
+    await api.post("/despesas", {
+      nome_despesa: pNomeDespesa,
+      valor_despesa: Number(pValorDespesa),
+      data_despesa: pDataDespesa || null,
+      fixa: pFixa
+    });
+  } catch (error) {
+    console.error(error);
+    throw error.response?.data?.erro || "Falha ao confirmar o serviço";
+  }
+}
+
+export async function excluirDespesaRealizada(id) {
+  try {
+    await api.delete("/despesas/" + id);
+  } catch (error) {
+    console.error(error);
+  }
+}
 export async function consultarStatusBarbearia() {
   try {
     const response = await api.get(`/barbearias/status`);

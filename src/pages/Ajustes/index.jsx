@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
-import { consultarAdicionais, consultarBarbas, consultarCabelos, consultarDespesas, consultarSobrancelhas } from "../../services/api";
+import { consultarAdicionais, consultarBarbas, consultarCabelos, consultarDespesa, consultarDespesas, consultarSobrancelhas } from "../../services/api";
 import CardServico from "../../components/CardServico";
 import Rodape from "../../components/Rodape";
 import { Button } from "@/components/ui/button";
@@ -16,6 +16,7 @@ export default function Ajustes() {
   const [dataAdicionais, setDataAdicionais] = useState([]);
   const [dataDespesas, setDataDespesas] = useState([]);
   const [isModalDespesa, setIsModalDespesa] = useState(false);
+  const [dataServico, setDataServico] = useState([]);
   const [isEditar, setIsEditar] = useState(false);
   const navigate = useNavigate();
 
@@ -44,9 +45,20 @@ export default function Ajustes() {
     setDataDespesas(response);
   }
 
-  async function handleSubmitDespesa(e) {
+  async function handleSubmitCorte(e) {
     e.preventDefault();
   }
+
+  async function handleEditar(id) {
+    const response = await consultarDespesa(id);
+    setDataServico(response)
+    setIsEditar(true);
+    setIsModalDespesa(true);
+
+  }
+
+
+
 
   useEffect(() => {
     listarCabelos();
@@ -58,7 +70,10 @@ export default function Ajustes() {
 
   return (
     <>
-      <ModalDespesa isOpen={isModalDespesa} setIsOpen={setIsModalDespesa} editar={isEditar} onClick={handleSubmitDespesa} />
+
+      <ModalCorte isOpen={isModalCorte} setIsOpen={setIsModalCorte} editar={isEditar} onClick={handleSubmitCorte} />
+      <ModalDespesa isOpen={isModalDespesa} setIsOpen={setIsModalDespesa} editar={isEditar} dataServico={dataServico} onClick={handleSubmitDespesa} />
+
       <section className="flex flex-col mt-2 items-center gap-y-5 min-h-screen">
         <h2 className="text-white heading-2">Serviços</h2>
         <section className="flex flex-col gap-y-4 w-full items-center">
@@ -81,7 +96,13 @@ export default function Ajustes() {
         <h2 className="text-white heading-2">Despesas</h2>
         <section className="flex flex-col gap-4 w-full items-center">
           {dataDespesas?.despesas?.map((item) => (
-            <CardServico tipo="despesa" nome={item?.nome_despesa} valor={item?.valor_despesa} />
+            <CardServico
+              id_servico={item.id_despesa}
+              key={item.id_despesa}
+              onClick={handleEditar}
+              tipo="despesa"
+              nome={item?.nome_despesa}
+              valor={item?.valor_despesa} />
           ))}
         </section>
         <h2 className="text-white heading-2">Configurações</h2>
@@ -103,10 +124,15 @@ export default function Ajustes() {
             Sair
           </Button>
         </section>
-        <section className="flex w-full justify-end">
+         <section className="flex w-full justify-end">
           <div className="h-20">
-            <Button onClick={() => setIsModalDespesa(true)} variant="destructive" className="fixed bottom-11 right-1">
+           <Button onClick={() => {
+              setIsEditar(false);
+              setIsModalDespesa([]);
+
+            }} variant="destructive" className="fixed bottom-11 right-30">
               <Plus /> Despesa
+            </Button>
             </Button>
           </div>
         </section>
