@@ -179,6 +179,12 @@ export async function consultarDespesa(id) {
     let response;
     response = await api.get(`/despesas/` + id);
     return response.data;
+
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 export async function alterarNumeroClientes(numero_clientes) {
   try {
     await api.put(`/barbearias/numero-clientes`, {
@@ -190,15 +196,18 @@ export async function alterarNumeroClientes(numero_clientes) {
 }
 
 
-export async function editarDespesa(id, pNomeDespesa, pValorDespesa,pDataDespesa, pFixa) {
+export async function editarDespesa(id, pNomeDespesa, pValorDespesa, pDataDespesa, pFixa) {
   try {
     await api.put("/despesas/" + id, {
       nome_despesa: pNomeDespesa,
       valor_despesa: pValorDespesa,
       data_despesa: pDataDespesa || null,
       fixa: pFixa
-
-    });
+    })
+  } catch (error) {
+    console.error(error)
+  }
+};
 export async function consultarBarbearias() {
   try {
     const response = await api.get(`/barbearias`);

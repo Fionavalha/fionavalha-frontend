@@ -133,7 +133,7 @@ export default function Ajustes() {
             }} variant="destructive" className="fixed bottom-11 right-30">
               <Plus /> Despesa
             </Button>
-            </Button>
+
           </div>
         </section>
       </section>

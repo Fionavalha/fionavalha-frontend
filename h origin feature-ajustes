@@ -1,0 +1,46 @@
+[33m89ba9a7[m[33m ([m[1;36mHEAD -> [m[1;32mfeature-ajustes[m[33m)[m Editar no modalDespesas
+[33md590237[m[33m ([m[1;31morigin/feature-ajustes[m[33m)[m Função editar no modal Despesa.
+[33mb30cb86[m :sparkles: feat: Criação para realizar a edição de serviços realizado
+[33m4aabb84[m Merge pull request #21 from Fionavalha/feature/ajustes
+[33m833949f[m Merge branch 'develop' into feature/ajustes
+[33m00f316d[m Criação de ajustes
+[33m442a71b[m consertando os modals
+[33m16f7cbb[m Merge pull request #18 from Fionavalha/feature/inicio
+[33m79060c5[m Merge branch 'develop' into feature/inicio
+[33m81a25dc[m feature/inicio
+[33m65aa70c[m Merge pull request #16 from Fionavalha/feature/financas
+[33m5480914[m Criação da página finanças
+[33m0368b48[m Merge pull request #14 from Fionavalha/feature/tabela
+[33m05642ee[m Criação das tabela: Receitas, Despesas, Total. Em finanças
+[33ma52c665[m Melhoria no toast do login
+[33m5d2db8b[m Merge pull request #13 from Fionavalha/feature/financas
+[33m4399494[m Criacao da pagina financas
+[33m3651b05[m Merge pull request #12 from Fionavalha/feature/modal
+[33mb8a79d4[m Criação do modal servico
+[33me662004[m Merge pull request #11 from Fionavalha/feature/login
+[33m62c0067[m Adição de componente de notificação e melhoria de mensagem ao realizar login
+[33mc66368c[m Merge pull request #10 from Fionavalha/feature/login
+[33m4fd6bf0[m Criação da funcionalidade login
+[33mbd55bbf[m Merge pull request #9 from Fionavalha/feature/landing-page
+[33mec98bb7[m Merge branch 'develop' into feature/landing-page
+[33m7bacaa9[m Adição na landing page
+[33mea3e533[m Merge pull request #8 from Fionavalha/feature/contador
+[33ma7b1aae[m Criação do componente contador e add do estilo do input number
+[33m70f3645[m Merge pull request #7 from Fionavalha/feature/landing-page
+[33m2467061[m Criação da landing page
+[33m3298199[m Alteração em variaveis de cores e inicio de landing page
+[33m404879e[m Merge pull request #6 from Fionavalha/feature/rodape
+[33me11cb38[m Alteração de estado de icone no Rodapé
+[33m07cacc2[m Merge pull request #5 from Fionavalha/feature/card-servico
+[33m79d6947[m Componente_card_servico
+[33m225265f[m Merge pull request #4 from Fionavalha/develop
+[33m0f178c6[m Merge pull request #3 from Fionavalha/globals-style
+[33m02f7920[m Merge branch 'develop' into globals-style
+[33m8903355[m Criação de variaveis de cor global
+[33md6e6627[m Merge pull request #2 from Fionavalha/feature/card-servico
+[33m96e3e1d[m Merge branch 'develop' into feature/card-servico
+[33md2a418e[m primeiro_commit_mateus
+[33m52c6c85[m Merge pull request #1 from Fionavalha/globals-style
+[33mc352eb0[m Criação de variaveis de texto global
+[33m0ff6be8[m Criação da página login
+[33mf88061c[m Commit inicial
