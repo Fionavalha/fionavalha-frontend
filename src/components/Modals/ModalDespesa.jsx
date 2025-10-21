@@ -5,7 +5,7 @@ import { DatePicker } from "../DatePicker";
 import { toast } from "sonner";
 import { adicionarDespesaRealizada, editarDespesa, excluirDespesaRealizada } from "../../services/api";
 
-export default function ModalDespesa({ isOpen, setIsOpen, dataServico, editar = false, onClick = () => { } }) {
+export default function ModalDespesa({ isOpen, setIsOpen, dataServico, editar = false }) {
   const [data, setData] = useState(null);
   const [isDespesaFixa, setIsDespesaFixa] = useState(false);
   const [nomeDespesa, setNomeDespesa] = useState("");
@@ -13,7 +13,8 @@ export default function ModalDespesa({ isOpen, setIsOpen, dataServico, editar = 
 
 
 
-  async function handleConfirmar() {
+  async function handleConfirmar(e) {
+    e.preventDefault()
     if (!nomeDespesa?.trim() || !valorDespesa || Number(valorDespesa) <= 0) {
       toast.error("Por favor, preencha o nome e um valor válido para a despesa.");
       return;
@@ -81,7 +82,7 @@ export default function ModalDespesa({ isOpen, setIsOpen, dataServico, editar = 
           <DialogDescription></DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={onClick} className="flex flex-col gap-y-4">
+        <form onSubmit={handleConfirmar} className="flex flex-col gap-y-4">
           <div className="flex flex-col">
             <label htmlFor="nome">Nome</label>
             <input
@@ -123,7 +124,7 @@ export default function ModalDespesa({ isOpen, setIsOpen, dataServico, editar = 
             <Button className="w-full" variant="outline" onClick={() => setIsOpen(false)}>
               Cancelar
             </Button>
-            <Button className="w-full" onClick={handleConfirmar}>
+            <Button className="w-full" >
               Confirmar
             </Button>
           </div>

@@ -8,6 +8,7 @@ import { CalendarClock, Coins, LogOut, Plus } from "lucide-react";
 import ModalDespesa from "../../components/Modals/ModalDespesa";
 import { replace, useNavigate } from "react-router";
 import { Lock } from "lucide-react";
+import { formatarDataPtBr } from "../../utils/formatador";
 
 export default function Ajustes() {
   const [dataCabelos, setDataCabelos] = useState([]);
@@ -45,10 +46,6 @@ export default function Ajustes() {
     setDataDespesas(response);
   }
 
-  async function handleSubmitCorte(e) {
-    e.preventDefault();
-  }
-
   async function handleEditar(id) {
     const response = await consultarDespesa(id);
     setDataServico(response)
@@ -56,8 +53,6 @@ export default function Ajustes() {
     setIsModalDespesa(true);
 
   }
-
-
 
 
   useEffect(() => {
@@ -70,9 +65,7 @@ export default function Ajustes() {
 
   return (
     <>
-
-      <ModalCorte isOpen={isModalCorte} setIsOpen={setIsModalCorte} editar={isEditar} onClick={handleSubmitCorte} />
-      <ModalDespesa isOpen={isModalDespesa} setIsOpen={setIsModalDespesa} editar={isEditar} dataServico={dataServico} onClick={handleSubmitDespesa} />
+      <ModalDespesa isOpen={isModalDespesa} setIsOpen={setIsModalDespesa} editar={isEditar} dataServico={dataServico} />
 
       <section className="flex flex-col mt-2 items-center gap-y-5 min-h-screen">
         <h2 className="text-white heading-2">Serviços</h2>
@@ -99,6 +92,7 @@ export default function Ajustes() {
             <CardServico
               id_servico={item.id_despesa}
               key={item.id_despesa}
+              horario= {formatarDataPtBr(item.data_despesa)}
               onClick={handleEditar}
               tipo="despesa"
               nome={item?.nome_despesa}
@@ -124,9 +118,9 @@ export default function Ajustes() {
             Sair
           </Button>
         </section>
-         <section className="flex w-full justify-end">
+        <section className="flex w-full justify-end">
           <div className="h-20">
-           <Button onClick={() => {
+            <Button onClick={() => {
               setIsEditar(false);
               setIsModalDespesa([]);
 
