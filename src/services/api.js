@@ -1,11 +1,23 @@
 import axios from "axios";
 
 export const api = axios.create({
-  baseURL: "http://192.168.3.66:3000",
-  headers: {
-    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJub21lX2JhcmJlaXJvIjoiUElOSkEiLCJpYXQiOjE3NjEwNjAzNzh9.8-Lbuqz5P1HCMvzzIQT6cl1A0RO95-LEO9wnMUXaMlA`,
-  },
+  baseURL: "http://192.168.2.103:3000",
 });
+
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 export async function efetuarLogin(pNomeBarbeiro, pSenha) {
   try {
@@ -13,11 +25,27 @@ export async function efetuarLogin(pNomeBarbeiro, pSenha) {
       nome_barbeiro: pNomeBarbeiro,
       senha: pSenha,
     });
+    localStorage.setItem("token", response.data.token);
+    localStorage.setItem("nome_barbeiro", response.data.nome_barbeiro);
 
     return response.data;
   } catch (error) {
     console.error(error);
     throw error.response?.data?.erro || "Falha na comunicação com servidor";
+  }
+}
+
+export async function alterarSenha(pSenhaAntiga, pSenhaNova) {
+  try {
+    const response = await api.post("/alterar-senha", {
+      senha_antiga: pSenhaAntiga,
+      senha_nova: pSenhaNova,
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error.response?.data?.mensagem || "Falha na comunicação com o servidor";
   }
 }
 
@@ -83,9 +111,9 @@ export async function adicionarServicoRealizado(pFormaPagamentoId, pValorTotal, 
     throw error.response?.data?.erro || "Falha ao confimar o serviço";
   }
 }
-export async function consultarServicosRealizados() {
+export async function consultarServicosRealizados(data = "") {
   try {
-    const response = await api.get("/servicos-realizados");
+    const response = await api.get(`/servicos-realizados?data=${data}`);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -151,6 +179,11 @@ export async function consultarDespesa(id) {
     let response;
     response = await api.get(`/despesas/` + id);
     return response.data;
+export async function alterarNumeroClientes(numero_clientes) {
+  try {
+    await api.put(`/barbearias/numero-clientes`, {
+      numero_clientes,
+    });
   } catch (error) {
     console.error(error);
   }
@@ -166,6 +199,19 @@ export async function editarDespesa(id, pNomeDespesa, pValorDespesa,pDataDespesa
       fixa: pFixa
 
     });
+export async function consultarBarbearias() {
+  try {
+    const response = await api.get(`/barbearias`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function consultarNumeroClientes() {
+  try {
+    const response = await api.get(`/barbearias/numero-clientes`);
+    return response.data.numero_clientes;
   } catch (error) {
     console.error(error);
   }
@@ -188,6 +234,24 @@ export async function adicionarDespesaRealizada(pNomeDespesa, pValorDespesa, pDa
 export async function excluirDespesaRealizada(id) {
   try {
     await api.delete("/despesas/" + id);
+  } catch (error) {
+    console.error(error);
+  }
+}
+export async function consultarStatusBarbearia() {
+  try {
+    const response = await api.get(`/barbearias/status`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function alterarStatusBarbearia(status) {
+  try {
+    await api.put(`/barbearias/status`, {
+      status,
+    });
   } catch (error) {
     console.error(error);
   }

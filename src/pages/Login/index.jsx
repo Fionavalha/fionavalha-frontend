@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { efetuarLogin } from "../../services/api";
 import { Link, useNavigate } from "react-router";
 import { toast } from "sonner";
@@ -21,6 +21,10 @@ export default function Login() {
       toast.error(error);
     }
   }
+
+  useEffect(() => {
+    localStorage.clear();
+  }, []);
 
   return (
     <>

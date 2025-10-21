@@ -4,8 +4,10 @@ import Contador from "../../components/Contador";
 import Rodape from "../../components/Rodape";
 import { useEffect, useState } from "react";
 import { ModalServico } from "../../components/Modals/ModalServico";
-import { consultarItensServicoRealizado, consultarServicosRealizados } from "../../services/api";
+import { alterarNumeroClientes, alterarStatusBarbearia, consultarItensServicoRealizado, consultarServicosRealizados, consultarStatusBarbearia } from "../../services/api";
 import CardServico from "../../components/CardServico";
+import { AlertaConfirmacao } from "../../components/AlertaConfirmacao";
+import { formatarDataISO } from "../../utils/formatador";
 
 export default function Inicio() {
   const [aberto, setAberto] = useState(false);
@@ -13,18 +15,31 @@ export default function Inicio() {
   const [dataServicos, setDataSevicos] = useState([]);
   const [isEditar, setIsEditar] = useState(false);
   const [dataServico, setDataServico] = useState([]);
+  const [showConfirmacaoFechar, setShowConfirmacaoFechar] = useState(false);
+  const [contador, setContador] = useState(0);
 
   async function listarServicosRealizados() {
-    const response = await consultarServicosRealizados();
+    const hoje = new Date();
+    const response = await consultarServicosRealizados(formatarDataISO(hoje));
     setDataSevicos(response);
   }
-  function handleStatus() {
-    if (!aberto) {
-      setAberto(true);
-    } else {
-      setAberto(false);
-    }
+
+  async function handleStatus() {
+    setAberto((prev) => {
+      const novoStatus = !prev;
+      const statusTexto = novoStatus ? "ABERTO" : "FECHADO";
+      alterarStatusBarbearia(statusTexto);
+      setContador(0);
+      resetarNumeroClientes();
+      return novoStatus;
+    });
   }
+
+  async function resetarNumeroClientes() {
+    await alterarNumeroClientes(0);
+    setContador(0);
+  }
+
   async function handleEditar(id) {
     const response = await consultarItensServicoRealizado(id);
     setDataServico(response);
@@ -39,36 +54,61 @@ export default function Inicio() {
     }
   }, [openModal]);
 
+  useEffect(() => {
+    carregarStatusBarbearia();
+  }, []);
+
+  async function carregarStatusBarbearia() {
+    const response = await consultarStatusBarbearia();
+
+    if (response?.status === "ABERTO") {
+      setAberto(true);
+    } else {
+      setAberto(false);
+    }
+  }
+
   return (
     <>
       {openModal && <ModalServico isModalOpen={openModal} setIsModalOpen={setOpenModal} editar={isEditar} dataServico={dataServico} />}
+      <AlertaConfirmacao
+        isModalOpen={showConfirmacaoFechar}
+        setIsModalOpen={setShowConfirmacaoFechar}
+        titulo="Atenção"
+        descricao="Tem certeza que deseja fechar a barbearia?"
+        confirmar="Confirmar"
+        cancelar="Cancelar"
+        onConfirm={handleStatus}
+        onCancel={() => setShowConfirmacaoFechar(false)}
+      />
 
-      <div className="flex flex-col h-dvh relative">
-        <Link to="/login" className="p-2">
-          <LogOut className="text-text-secondary cursor-pointer hover:text-brand-primary w-10 h-10" />
-        </Link>
-        <section className="flex flex-col gap-y-5 ">
-          <section className="flex flex-col items-center ">
-            <div className="flex flex-col gap-y-7 w-70 h-auto  ">
-              <h1 className="text-center heading-1 text-white ">
+      <div className="flex flex-col h-dvh relative mt-4">
+        <section className="flex flex-col gap-y-4">
+          <section className="flex flex-col items-center">
+            <div className="flex flex-col gap-2 w-70 h-auto">
+              <h1 className="text-center heading-1 text-white">
                 Barbearia <br /> Fio Navalha
               </h1>
               <div className="flex justify-center">
                 <button
-                  onClick={handleStatus}
-                  className={`flex flex-col items-center justify-center rounded-xl border text-white w-35 h-9 transition
-            ${aberto ? "bg-feedback-success cursor-pointer border-feedback-success" : "bg-feedback-error border-feedback-error"}`}
+                  onClick={() => (aberto ? setShowConfirmacaoFechar(true) : handleStatus())}
+                  className={`
+                    flex flex-col items-center justify-center rounded-xl border text-white w-35 h-9 transition font-bold
+                    ${aberto ? "bg-feedback-success cursor-pointer border-feedback-success" : "bg-feedback-error border-feedback-error"}
+                  `}
                 >
                   {aberto ? "Aberto" : "Fechado"}
                 </button>
               </div>
             </div>
           </section>
-          <div className="flex justify-center ">
-            <Contador />
-          </div>
 
-          <section className="flex flex-col gap-y-3 items-center overflow-y-auto h-113 ">
+          {aberto && (
+            <div className="flex justify-center">
+              <Contador contador={contador} setContador={setContador} />
+            </div>
+          )}
+          <section className="flex flex-col gap-y-3 items-center overflow-y-auto h-113">
             {dataServicos.map((item) => (
               <CardServico
                 onClick={handleEditar}

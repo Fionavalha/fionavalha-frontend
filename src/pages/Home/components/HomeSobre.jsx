@@ -1,7 +1,7 @@
 import React from "react";
 import imagemSobre from "../../../assets/images/imagem-sobre.svg";
 
-export default function HomeSobre() {
+export default function HomeSobre({ horarioInicio, horarioFim }) {
   return (
     <>
       <section className="flex justify-center items-center px-2 min-h-svh">
@@ -12,11 +12,11 @@ export default function HomeSobre() {
           <section className="flex flex-col max-w-174 gap-y-4">
             <h2 className="heading-1 text-white">Sobre</h2>
             <p className="text-white">
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ullam, repudiandae dolor alias, neque magnam eaque laudantium non iste ea suscipit nemo
-              ut. Similique distinctio molestias et, atque adipisci ex repellendus!
+              Barbearia Fio Navalha, tradição e cuidado andam juntos. Cada corte é feito com atenção, boa conversa e aquele clima acolhedor de barbearia de verdade. Aqui, o cliente entra pra se
+              cuidar e sai se sentindo novo.
             </p>
             <p className="text-white">
-              Horário de funcionamento: <strong>09:00</strong> ás <strong>19:00</strong>
+              Horário de funcionamento: <strong>{horarioInicio}</strong> ás <strong>{horarioFim}</strong>
             </p>
           </section>
         </div>
