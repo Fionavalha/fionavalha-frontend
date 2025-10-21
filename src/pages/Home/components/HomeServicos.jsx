@@ -10,7 +10,6 @@ export default function HomeServicos() {
   async function listarCortes() {
     try {
       const responseCabelos = await consultarCabelos();
-      console.log(responseCabelos.data);
       setCortesCabelos(responseCabelos.data);
     } catch (error) {
       console.error(error);

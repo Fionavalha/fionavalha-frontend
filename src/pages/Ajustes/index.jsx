@@ -1,0 +1,132 @@
+import React, { useState } from "react";
+import { useEffect } from "react";
+import { consultarAdicionais, consultarBarbas, consultarCabelos, consultarDespesa, consultarDespesas, consultarSobrancelhas } from "../../services/api";
+import CardServico from "../../components/CardServico";
+import Rodape from "../../components/Rodape";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
+import ModalCorte from "../../components/Modals/ModalCorte";
+import ModalDespesa from "../../components/Modals/ModalDespesa";
+
+export default function Ajustes() {
+  const [dataCabelos, setDataCabelos] = useState([]);
+  const [dataBarbas, setDataBarbas] = useState([]);
+  const [dataSobrancelhas, setDataSobrancelhas] = useState([]);
+  const [dataAdicionais, setDataAdicionais] = useState([]);
+  const [dataDespesas, setDataDespesas] = useState([]);
+  const [isModalCorte, setIsModalCorte] = useState(false);
+  const [isModalDespesa, setIsModalDespesa] = useState(false);
+  const [dataServico, setDataServico] = useState([]);
+  const [isEditar, setIsEditar] = useState(false);
+
+  async function listarCabelos() {
+    const response = await consultarCabelos();
+    setDataCabelos(response);
+  }
+
+  async function listarBarbas() {
+    const response = await consultarBarbas();
+    setDataBarbas(response);
+  }
+
+  async function listarSobrancelhas() {
+    const response = await consultarSobrancelhas();
+    setDataSobrancelhas(response);
+  }
+
+  async function listarAdicionais() {
+    const response = await consultarAdicionais();
+    setDataAdicionais(response);
+  }
+
+  async function listarDespesas() {
+    const response = await consultarDespesas();
+    setDataDespesas(response);
+  }
+
+  async function handleSubmitCorte(e) {
+    e.preventDefault();
+  }
+
+  async function handleEditar(id) {
+    const response = await consultarDespesa(id);
+    setDataServico(response)
+    setIsEditar(true);
+    setIsModalDespesa(true);
+
+  }
+
+  async function handleSubmitDespesa(e) {
+    e.preventDefault();
+  }
+
+  useEffect(() => {
+    listarCabelos();
+    listarBarbas();
+    listarSobrancelhas();
+    listarAdicionais();
+    listarDespesas();
+  }, []);
+
+  return (
+    <>
+      <ModalCorte isOpen={isModalCorte} setIsOpen={setIsModalCorte} editar={isEditar} onClick={handleSubmitCorte} />
+      <ModalDespesa isOpen={isModalDespesa} setIsOpen={setIsModalDespesa} editar={isEditar} dataServico={dataServico} onClick={handleSubmitDespesa} />
+      <section className="flex flex-col mt-2 items-center gap-y-5 min-h-screen">
+        <h2 className="text-white heading-2">Serviços</h2>
+        <section className="flex flex-col gap-y-4 w-full items-center">
+          {dataCabelos?.map((item) => (
+            <CardServico key={item?.id_cabelo} nome={item?.nome_cabelo} valor={item?.valor_cabelo} />
+          ))}
+
+          {dataBarbas?.map((item) => (
+            <CardServico key={item?.id_barba} nome={item?.nome_barba} valor={item?.valor_barba} />
+          ))}
+
+          {dataSobrancelhas?.map((item) => (
+            <CardServico key={item?.id_sobrancelha} nome={item?.nome_sobrancelha} valor={item?.valor_sobrancelha} />
+          ))}
+
+          {dataAdicionais?.map((item) => (
+            <CardServico key={item?.id_adicional} nome={item?.nome_adicional} valor={item?.valor_adicional} />
+          ))}
+        </section>
+        <h2 className="text-white heading-2">Despesas</h2>
+        <section className="flex flex-col gap-4 w-full items-center">
+          {dataDespesas?.despesas?.map((item) => (
+            <CardServico
+              id_servico={item.id_despesa}
+              key={item.id_despesa}
+              onClick={handleEditar}
+              tipo="despesa"
+              nome={item?.nome_despesa}
+              valor={item?.valor_despesa} />
+          ))}
+        </section>
+        <section className="flex w-full justify-end">
+          <div className="flex gap-4 h-20">
+            <Button onClick={() => {
+              setIsEditar(false);
+              setIsModalDespesa([]);
+
+            }} variant="destructive" className="fixed bottom-11 right-30">
+              <Plus /> Despesa
+            </Button>
+            <Button onClick={() => {
+              setIsEditar(false);
+              setIsModalCorte([]);
+
+            }}
+
+              className="fixed bottom-11 right-2">
+              <Plus /> Serviço
+            </Button>
+          </div>
+        </section>
+      </section>
+      <section>
+        <Rodape ativo="ajustes" />
+      </section>
+    </>
+  );
+}

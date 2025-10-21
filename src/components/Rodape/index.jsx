@@ -7,7 +7,7 @@ export default function Rodape({ ativo }) {
   function handleIcone(icone) {
     if (icone === "inicio" && ativo !== "inicio") navigate("/inicio")
     if (icone === "financas" && ativo !== "financas") navigate("/financas")
-    if (icone === "editar" && ativo !== "editar") navigate("/editar")
+    if (icone === "ajustes" && ativo !== "ajustes") navigate("/ajustes")
   }
 
   return (
@@ -25,8 +25,8 @@ export default function Rodape({ ativo }) {
         <Wallet className="w-6 h-6" />
       </button>
       <button
-        onClick={() => handleIcone("editar")}
-        className={`flex flex-col items-center ${ativo === "editar" ? "text-brand-primary" : "text-text-primary hover:text-brand-primary"}`}
+        onClick={() => handleIcone("ajustes")}
+        className={`flex flex-col items-center ${ativo === "ajustes" ? "text-brand-primary" : "text-text-primary hover:text-brand-primary"}`}
       >
         <Pencil className="w-6 h-6" />
       </button>

@@ -1,10 +1,10 @@
-import { CirclePlus, LogOut, Plus } from "lucide-react";
-import { data, Link, useNavigate } from "react-router";
+import { LogOut, Plus } from "lucide-react";
+import { Link } from "react-router";
 import Contador from "../../components/Contador";
 import Rodape from "../../components/Rodape";
 import { useEffect, useState } from "react";
 import { ModalServico } from "../../components/Modals/ModalServico";
-import { consultarServicoRealizado, consultarServicosRealizados } from "../../services/api";
+import { consultarItensServicoRealizado, consultarServicosRealizados } from "../../services/api";
 import CardServico from "../../components/CardServico";
 
 export default function Inicio() {
@@ -26,17 +26,22 @@ export default function Inicio() {
     }
   }
   async function handleEditar(id) {
-    const response = await consultarServicoRealizado(id);
+    const response = await consultarItensServicoRealizado(id);
     setDataServico(response);
+
     setIsEditar(true);
     setOpenModal(true);
   }
+
   useEffect(() => {
-    listarServicosRealizados();
-  }, []);
+    if (!openModal) {
+      listarServicosRealizados();
+    }
+  }, [openModal]);
+
   return (
     <>
-      <ModalServico isModalOpen={openModal} setIsModalOpen={setOpenModal} editar={isEditar} dataServico={dataServico}  />
+      {openModal && <ModalServico isModalOpen={openModal} setIsModalOpen={setOpenModal} editar={isEditar} dataServico={dataServico} />}
 
       <div className="flex flex-col h-dvh relative">
         <Link to="/login" className="p-2">
@@ -71,7 +76,7 @@ export default function Inicio() {
                 key={item.id_servico_realizado}
                 formaPagamento={item.forma_pagamento}
                 horario={item.horario}
-                tipoCorte={item.nome_servico}
+                nome={item.nome_servico}
                 valor={item.valor_total}
               />
             ))}
@@ -79,12 +84,19 @@ export default function Inicio() {
         </section>
 
         <div className="fixed bottom-21 right-5 z-20">
-          <button onClick={() => setOpenModal(true)}>
+          <button
+            onClick={() => {
+              setIsEditar(false);
+              setDataServico([]);
+              setOpenModal(true);
+            }}
+          >
             <Plus className="transition text-white border border-brand-primary rounded-full bg-brand-primary cursor-pointer w-13 h-13 p-2" />
           </button>
         </div>
+
         <footer>
-          <Rodape />
+          <Rodape ativo="inicio" />
         </footer>
       </div>
     </>

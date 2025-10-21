@@ -1,25 +1,18 @@
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 
-export function AlertDialogDemo({ isModalOpen, setIsModalOpen }) {
+export function AlertDialogDemo({ isModalOpen, setIsModalOpen, titulo = "", descricao = "", cancelar = "", confirmar = "", variant = "default", onClick = () => {} }) {
   return (
     <AlertDialog open={isModalOpen} onOpenChange={setIsModalOpen}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>CUIDADO !</AlertDialogTitle>
-          <AlertDialogDescription>Tem certeza que deseja excluir esse serviço?</AlertDialogDescription>
+          <AlertDialogTitle>{titulo}</AlertDialogTitle>
+          <AlertDialogDescription>{descricao}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Não</AlertDialogCancel>
-          <AlertDialogAction>Sim</AlertDialogAction>
+          <AlertDialogCancel>{cancelar}</AlertDialogCancel>
+          <AlertDialogAction onClick={onClick} variant={variant}>
+            {confirmar}
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

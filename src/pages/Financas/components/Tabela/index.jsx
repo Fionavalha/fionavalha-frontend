@@ -24,11 +24,11 @@ export function TabelaReceitas({ data = [], total = null }) {
       </TableBody>
       <TableFooter>
         <TableRow>
-          <TableCell className="text-left font-bold w-1/2">
-            TOTAL
-          </TableCell>
+          <TableCell className="text-left font-bold w-1/2">TOTAL</TableCell>
           <TableCell className="text-center font-bold w-1/4">{total?.qtd}</TableCell>
-          <TableCell className="text-right font-bold w-1/4">{formatarDinheiro(Number(total?.valor_total))}</TableCell>
+          <TableCell className={`text-right font-bold w-1/4 ${formatarDinheiro(total?.valor_total) > 0 ? "text-feedback-success" : "text-black"}`}>
+            {formatarDinheiro(Number(total?.valor_total))}
+          </TableCell>
         </TableRow>
       </TableFooter>
     </Table>
@@ -63,7 +63,7 @@ export function TabelaDespesas({ data = [], total = null }) {
           <TableCell className="text-left font-bold" colSpan={3}>
             TOTAL
           </TableCell>
-          <TableCell className="text-right font-bold ">{formatarDinheiro(Number(total?.valor_total))}</TableCell>
+          <TableCell className={`text-right font-bold ${Number(total?.valor_total) > 0 ? "text-feedback-error" : "text-black"}`}>{formatarDinheiro(Number(total?.valor_total))}</TableCell>
         </TableRow>
       </TableFooter>
     </Table>
@@ -77,7 +77,9 @@ export function TabelaTotal({ total = null }) {
       <TableBody>
         <TableRow>
           <TableCell className="font-bold">TOTAL</TableCell>
-          <TableCell className={`${desformatarDinheiro(total) > 0 ? "text-feedback-success" : "text-feedback-error"} text-right font-bold`}>{total}</TableCell>
+          <TableCell className={`${desformatarDinheiro(total) > 0 ? "text-feedback-success" : desformatarDinheiro(total) === 0 ? "text-black" : "text-feedback-error"} text-right font-bold`}>
+            {total}
+          </TableCell>
         </TableRow>
       </TableBody>
     </Table>
