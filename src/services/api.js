@@ -1,9 +1,9 @@
 import axios from "axios";
 
 export const api = axios.create({
-  baseURL: "http://10.5.33.103:3000",
+  baseURL: "http://192.168.3.66:3000",
   headers: {
-    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJub21lIjoiUElOSkEiLCJpYXQiOjE3NTg3NTc0MjJ9.pjiGI1Ql0bwi3Mf3W19YjJUofP6IpDBLfx4vfL3DvE0`,
+    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJub21lX2JhcmJlaXJvIjoiUElOSkEiLCJpYXQiOjE3NjAwMTUzNDR9.zgm9EK0uJ5R84jgADG5fDF4gN1MSvsG_z8qcm_hkcHw`,
   },
 });
 
@@ -141,6 +141,53 @@ export async function consultarDespesas(dataInicial = "", dataFinal = "") {
       response = await api.get(`/despesas`);
     }
     return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function consultarDespesa(id) {
+  try {
+    let response;
+    response = await api.get(`/despesas/` + id);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+
+export async function editarDespesa(id, pNomeDespesa, pValorDespesa,pDataDespesa, pFixa) {
+  try {
+    await api.put("/despesas/" + id, {
+      nome_despesa: pNomeDespesa,
+      valor_despesa: pValorDespesa,
+      data_despesa: pDataDespesa || null,
+      fixa: pFixa
+
+    });
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function adicionarDespesaRealizada(pNomeDespesa, pValorDespesa, pDataDespesa, pFixa) {
+  try {
+    await api.post("/despesas", {
+      nome_despesa: pNomeDespesa,
+      valor_despesa: Number(pValorDespesa),
+      data_despesa: pDataDespesa || null,
+      fixa: pFixa
+    });
+  } catch (error) {
+    console.error(error);
+    throw error.response?.data?.erro || "Falha ao confirmar o serviço";
+  }
+}
+
+export async function excluirDespesaRealizada(id) {
+  try {
+    await api.delete("/despesas/" + id);
   } catch (error) {
     console.error(error);
   }

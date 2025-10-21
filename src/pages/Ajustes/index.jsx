@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
-import { consultarAdicionais, consultarBarbas, consultarCabelos, consultarDespesas, consultarSobrancelhas } from "../../services/api";
+import { consultarAdicionais, consultarBarbas, consultarCabelos, consultarDespesa, consultarDespesas, consultarSobrancelhas } from "../../services/api";
 import CardServico from "../../components/CardServico";
 import Rodape from "../../components/Rodape";
 import { Button } from "@/components/ui/button";
@@ -16,6 +16,7 @@ export default function Ajustes() {
   const [dataDespesas, setDataDespesas] = useState([]);
   const [isModalCorte, setIsModalCorte] = useState(false);
   const [isModalDespesa, setIsModalDespesa] = useState(false);
+  const [dataServico, setDataServico] = useState([]);
   const [isEditar, setIsEditar] = useState(false);
 
   async function listarCabelos() {
@@ -47,6 +48,14 @@ export default function Ajustes() {
     e.preventDefault();
   }
 
+  async function handleEditar(id) {
+    const response = await consultarDespesa(id);
+    setDataServico(response)
+    setIsEditar(true);
+    setIsModalDespesa(true);
+
+  }
+
   async function handleSubmitDespesa(e) {
     e.preventDefault();
   }
@@ -62,7 +71,7 @@ export default function Ajustes() {
   return (
     <>
       <ModalCorte isOpen={isModalCorte} setIsOpen={setIsModalCorte} editar={isEditar} onClick={handleSubmitCorte} />
-      <ModalDespesa isOpen={isModalDespesa} setIsOpen={setIsModalDespesa} editar={isEditar} onClick={handleSubmitDespesa} />
+      <ModalDespesa isOpen={isModalDespesa} setIsOpen={setIsModalDespesa} editar={isEditar} dataServico={dataServico} onClick={handleSubmitDespesa} />
       <section className="flex flex-col mt-2 items-center gap-y-5 min-h-screen">
         <h2 className="text-white heading-2">Serviços</h2>
         <section className="flex flex-col gap-y-4 w-full items-center">
@@ -85,15 +94,31 @@ export default function Ajustes() {
         <h2 className="text-white heading-2">Despesas</h2>
         <section className="flex flex-col gap-4 w-full items-center">
           {dataDespesas?.despesas?.map((item) => (
-            <CardServico tipo="despesa" nome={item?.nome_despesa} valor={item?.valor_despesa} />
+            <CardServico
+              id_servico={item.id_despesa}
+              key={item.id_despesa}
+              onClick={handleEditar}
+              tipo="despesa"
+              nome={item?.nome_despesa}
+              valor={item?.valor_despesa} />
           ))}
         </section>
         <section className="flex w-full justify-end">
           <div className="flex gap-4 h-20">
-            <Button onClick={() => setIsModalDespesa(true)} variant="destructive" className="fixed bottom-11 right-30">
+            <Button onClick={() => {
+              setIsEditar(false);
+              setIsModalDespesa([]);
+
+            }} variant="destructive" className="fixed bottom-11 right-30">
               <Plus /> Despesa
             </Button>
-            <Button onClick={() => setIsModalCorte(true)} className="fixed bottom-11 right-2">
+            <Button onClick={() => {
+              setIsEditar(false);
+              setIsModalCorte([]);
+
+            }}
+
+              className="fixed bottom-11 right-2">
               <Plus /> Serviço
             </Button>
           </div>
