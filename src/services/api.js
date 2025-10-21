@@ -3,7 +3,7 @@ import axios from "axios";
 export const api = axios.create({
   baseURL: "http://192.168.3.66:3000",
   headers: {
-    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJub21lX2JhcmJlaXJvIjoiUElOSkEiLCJpYXQiOjE3NjAwMTUzNDR9.zgm9EK0uJ5R84jgADG5fDF4gN1MSvsG_z8qcm_hkcHw`,
+    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJub21lX2JhcmJlaXJvIjoiUElOSkEiLCJpYXQiOjE3NjEwNjAzNzh9.8-Lbuqz5P1HCMvzzIQT6cl1A0RO95-LEO9wnMUXaMlA`,
   },
 });
 
