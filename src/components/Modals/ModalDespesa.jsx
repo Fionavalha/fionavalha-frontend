@@ -51,7 +51,7 @@ export default function ModalDespesa({ isOpen, setIsOpen, dataServico, editar = 
       const item = dataServico[0];
       setNomeDespesa(item.nome_despesa ?? "");
       setValorDespesa(item.valor_despesa ?? "");
-      setData(item.data_despesa ? new Date(item.data_despesa) : null);
+      setData(item.data_despesa ? new Date(`${item.data_despesa}T00:00:00`) : null);
       setIsDespesaFixa(Boolean(item.fixa));
     } else {
       setNomeDespesa("");
