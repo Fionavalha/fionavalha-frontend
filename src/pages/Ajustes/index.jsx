@@ -48,12 +48,19 @@ export default function Ajustes() {
 
   async function handleEditar(id) {
     const response = await consultarDespesa(id);
-    setDataServico(response)
+    setDataServico(response);
     setIsEditar(true);
     setIsModalDespesa(true);
-
   }
 
+  async function editarServicoCabelo(servico) {
+    console.log(servico);
+  }
+
+  useEffect(() => {
+    if (isModalDespesa) return;
+    listarDespesas();
+  }, [isModalDespesa]);
 
   useEffect(() => {
     listarCabelos();
@@ -71,7 +78,7 @@ export default function Ajustes() {
         <h2 className="text-white heading-2">Serviços</h2>
         <section className="flex flex-col gap-y-4 w-full items-center">
           {dataCabelos?.map((item) => (
-            <CardServico key={item?.id_cabelo} nome={item?.nome_cabelo} valor={item?.valor_cabelo} />
+            <CardServico key={item?.id_cabelo} nome={item?.nome_cabelo} valor={item?.valor_cabelo} onClick={() => editarServicoCabelo(item)} />
           ))}
 
           {dataBarbas?.map((item) => (
@@ -92,11 +99,12 @@ export default function Ajustes() {
             <CardServico
               id_servico={item.id_despesa}
               key={item.id_despesa}
-              horario= {formatarDataPtBr(item.data_despesa)}
+              horario={formatarDataPtBr(item.data_despesa)}
               onClick={handleEditar}
               tipo="despesa"
               nome={item?.nome_despesa}
-              valor={item?.valor_despesa} />
+              valor={item?.valor_despesa}
+            />
           ))}
         </section>
         <h2 className="text-white heading-2">Configurações</h2>
@@ -120,14 +128,16 @@ export default function Ajustes() {
         </section>
         <section className="flex w-full justify-end">
           <div className="h-20">
-            <Button onClick={() => {
-              setIsEditar(false);
-              setIsModalDespesa([]);
-
-            }} variant="destructive" className="fixed bottom-11 right-30">
+            <Button
+              onClick={() => {
+                setIsEditar(false);
+                setIsModalDespesa([]);
+              }}
+              variant="destructive"
+              className="fixed bottom-11 right-30"
+            >
               <Plus /> Despesa
             </Button>
-
           </div>
         </section>
       </section>
