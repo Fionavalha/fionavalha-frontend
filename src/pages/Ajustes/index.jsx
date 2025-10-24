@@ -98,6 +98,7 @@ export default function Ajustes() {
         <h2 className="text-white heading-2">Serviços</h2>
         <section className="flex flex-col gap-y-4 w-full items-center">
           {dataCabelos?.map((item) => (
+            
             <CardServico key={item?.id_cabelo} onClick={() => handleServicoCabelo(item)} nome={item?.nome_cabelo} valor={item?.valor_cabelo} />
           ))}
 
