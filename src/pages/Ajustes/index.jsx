@@ -20,9 +20,9 @@ export default function Ajustes() {
   const [isModalDespesa, setIsModalDespesa] = useState(false);
   const [dataServico, setDataServico] = useState([]);
   const [isEditar, setIsEditar] = useState(false);
-  const [IsModalServico, setIsModalServico] = useState(false)
-  const [editarIs, SetEditarIs] = useState(false)
-  const [dateServico, setDateServico] = useState([])
+  const [IsModalServico, setIsModalServico] = useState(false);
+  const [editarIs, SetEditarIs] = useState(false);
+  const [dateServico, setDateServico] = useState([]);
   const navigate = useNavigate();
 
   async function listarCabelos() {
@@ -52,29 +52,28 @@ export default function Ajustes() {
     setIsModalDespesa(true);
   }
 
-
   async function handleServicoCabelo(servico) {
-    setDateServico({ ...servico, tipo: "cabelo" })
-    SetEditarIs(true)
-    setIsModalServico(true)
+    setDateServico({ ...servico, tipo: "cabelo" });
+    SetEditarIs(true);
+    setIsModalServico(true);
   }
-  
+
   async function handleServicoBarba(servico) {
-    setDateServico({ ...servico, tipo: "barba" })
-    SetEditarIs(true)
-    setIsModalServico(true)
+    setDateServico({ ...servico, tipo: "barba" });
+    SetEditarIs(true);
+    setIsModalServico(true);
   }
-  
+
   async function handleServicoSobrancelha(servico) {
-    setDateServico({ ...servico, tipo: "sobrancelha" })
-    SetEditarIs(true)
-    setIsModalServico(true)
+    setDateServico({ ...servico, tipo: "sobrancelha" });
+    SetEditarIs(true);
+    setIsModalServico(true);
   }
-  
+
   async function handleServicoAdicionais(servico) {
-    setDateServico({ ...servico, tipo: "adicionais" })
-    SetEditarIs(true)
-    setIsModalServico(true)
+    setDateServico({ ...servico, tipo: "adicionais" });
+    SetEditarIs(true);
+    setIsModalServico(true);
   }
 
   useEffect(() => {
@@ -88,7 +87,7 @@ export default function Ajustes() {
     listarSobrancelhas();
     listarAdicionais();
   }, []);
-  
+
   return (
     <>
       <ModalDespesa isOpen={isModalDespesa} setIsOpen={setIsModalDespesa} editar={isEditar} dataServico={dataServico} />
@@ -98,7 +97,6 @@ export default function Ajustes() {
         <h2 className="text-white heading-2">Serviços</h2>
         <section className="flex flex-col gap-y-4 w-full items-center">
           {dataCabelos?.map((item) => (
-            
             <CardServico key={item?.id_cabelo} onClick={() => handleServicoCabelo(item)} nome={item?.nome_cabelo} valor={item?.valor_cabelo} />
           ))}
 
