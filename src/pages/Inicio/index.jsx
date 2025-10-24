@@ -1,5 +1,4 @@
-import { LogOut, Plus } from "lucide-react";
-import { Link } from "react-router";
+import { Plus } from "lucide-react";
 import Contador from "../../components/Contador";
 import Rodape from "../../components/Rodape";
 import { useEffect, useState } from "react";
@@ -7,7 +6,6 @@ import { ModalServico } from "../../components/Modals/ModalServico";
 import { alterarNumeroClientes, alterarStatusBarbearia, consultarItensServicoRealizado, consultarServicosRealizados, consultarStatusBarbearia } from "../../services/api";
 import CardServico from "../../components/CardServico";
 import { AlertaConfirmacao } from "../../components/AlertaConfirmacao";
-import { formatarDataISO } from "../../utils/formatador";
 
 export default function Inicio() {
   const [aberto, setAberto] = useState(false);
@@ -19,8 +17,10 @@ export default function Inicio() {
   const [contador, setContador] = useState(0);
 
   async function listarServicosRealizados() {
-    const hoje = new Date();
-    const response = await consultarServicosRealizados(formatarDataISO(hoje));
+    const agora = new Date();
+    const local = new Date(agora.getTime() - agora.getTimezoneOffset() * 60000);
+    const dataFormatada = local.toISOString().split("T")[0];
+    const response = await consultarServicosRealizados(dataFormatada);
     setDataSevicos(response);
   }
 
