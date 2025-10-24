@@ -48,9 +48,9 @@ export default function ModalDespesa({ isOpen, setIsOpen, dataServico, editar = 
     if (!isOpen) return;
 
     if (!isDespesaFixa) {
-      setData(null);
+      setData(new Date());
     }
-  }, [isDespesaFixa]);
+  }, [isDespesaFixa, isOpen]);
 
   useEffect(() => {
     if (!isOpen) return;
