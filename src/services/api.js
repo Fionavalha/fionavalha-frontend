@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const api = axios.create({
-  baseURL: "http://192.168.3.66:3000",
+  baseURL: "http://10.5.33.103:3000",
 });
 
 api.interceptors.request.use(
@@ -224,7 +224,6 @@ export async function consultarDespesa(id) {
     let response;
     response = await api.get(`/despesas/` + id);
     return response.data;
-
   } catch (error) {
     console.error(error);
   }
@@ -240,19 +239,18 @@ export async function alterarNumeroClientes(numero_clientes) {
   }
 }
 
-
 export async function editarDespesa(id, pNomeDespesa, pValorDespesa, pDataDespesa, pFixa) {
   try {
     await api.put("/despesas/" + id, {
       nome_despesa: pNomeDespesa,
       valor_despesa: pValorDespesa,
       data_despesa: pDataDespesa || null,
-      fixa: pFixa
-    })
+      fixa: pFixa,
+    });
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
-};
+}
 export async function consultarBarbearias() {
   try {
     const response = await api.get(`/barbearias`);
@@ -277,7 +275,7 @@ export async function adicionarDespesaRealizada(pNomeDespesa, pValorDespesa, pDa
       nome_despesa: pNomeDespesa,
       valor_despesa: Number(pValorDespesa),
       data_despesa: pDataDespesa || null,
-      fixa: pFixa
+      fixa: pFixa,
     });
   } catch (error) {
     console.error(error);

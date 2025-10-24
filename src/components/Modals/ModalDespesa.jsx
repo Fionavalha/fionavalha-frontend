@@ -11,10 +11,8 @@ export default function ModalDespesa({ isOpen, setIsOpen, dataServico, editar = 
   const [nomeDespesa, setNomeDespesa] = useState("");
   const [valorDespesa, setValorDespesa] = useState("");
 
-
-
   async function handleConfirmar(e) {
-    e.preventDefault()
+    e.preventDefault();
     if (!nomeDespesa?.trim() || !valorDespesa || Number(valorDespesa) <= 0) {
       toast.error("Por favor, preencha o nome e um valor válido para a despesa.");
       return;
@@ -22,23 +20,17 @@ export default function ModalDespesa({ isOpen, setIsOpen, dataServico, editar = 
 
     try {
       if (editar) {
-        await editarDespesa(dataServico[0].id_despesa, nomeDespesa, valorDespesa, data, isDespesaFixa);
+        await editarDespesa(dataServico[0].id_despesa, nomeDespesa.toUpperCase(), valorDespesa, data, isDespesaFixa);
         toast.success("Despesa editada com sucesso!");
       } else {
-        await adicionarDespesaRealizada(nomeDespesa, valorDespesa, data, isDespesaFixa);
+        await adicionarDespesaRealizada(nomeDespesa.toUpperCase(), valorDespesa, data, isDespesaFixa);
         toast.success("Despesa adicionada com sucesso!");
       }
       setIsOpen(false);
-
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
-
-
     } catch (error) {
       toast.error("Erro ao salvar despesa.");
     }
-  };
+  }
 
   async function handleExcluir() {
     if (!dataServico || dataServico.length === 0) return;
@@ -47,11 +39,6 @@ export default function ModalDespesa({ isOpen, setIsOpen, dataServico, editar = 
       await excluirDespesaRealizada(dataServico[0].id_despesa);
       toast.success("Despesa excluída com sucesso!");
       setIsOpen(false);
-
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
-
     } catch (error) {
       toast.error(error.message || "Erro ao excluir despesa");
     }
@@ -60,11 +47,19 @@ export default function ModalDespesa({ isOpen, setIsOpen, dataServico, editar = 
   useEffect(() => {
     if (!isOpen) return;
 
+    if (!isDespesaFixa) {
+      setData(null);
+    }
+  }, [isDespesaFixa]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
     if (editar && dataServico?.length > 0) {
       const item = dataServico[0];
       setNomeDespesa(item.nome_despesa ?? "");
       setValorDespesa(item.valor_despesa ?? "");
-      setData(item.data_despesa ? new Date(item.data_despesa) : null);
+      setData(item.data_despesa ? new Date(`${item.data_despesa}T00:00:00`) : null);
       setIsDespesaFixa(Boolean(item.fixa));
     } else {
       setNomeDespesa("");
@@ -85,51 +80,33 @@ export default function ModalDespesa({ isOpen, setIsOpen, dataServico, editar = 
         <form onSubmit={handleConfirmar} className="flex flex-col gap-y-4">
           <div className="flex flex-col">
             <label htmlFor="nome">Nome</label>
-            <input
-              id="nome"
-              required
-              type="text"
-              value={nomeDespesa}
-              onChange={(e) => setNomeDespesa(e.target.value)}
-              className="input-base h-9 uppercase"
-            />
+            <input id="nome" required type="text" value={nomeDespesa.toUpperCase()} onChange={(e) => setNomeDespesa(e.target.value)} className="input-base h-9 uppercase" />
           </div>
 
           <div className="flex flex-col">
             <label htmlFor="valor">Valor</label>
-            <input
-              id="valor"
-              required
-              type="text"
-              value={valorDespesa}
-              onChange={(e) => setValorDespesa(e.target.value)}
-              className="input-base h-9"
-            />
+            <input id="valor" required type="text" value={valorDespesa} onChange={(e) => setValorDespesa(e.target.value)} className="input-base h-9" />
           </div>
 
           <DatePicker label="Data" date={data} setDate={setData} active={isDespesaFixa} />
 
           <div className="flex justify-end gap-2">
             <label htmlFor="fixa">Despesa fixa?</label>
-            <input
-              type="checkbox"
-              className="w-5"
-              id="fixa"
-              checked={isDespesaFixa}
-              onChange={(e) => setIsDespesaFixa(e.target.checked)}
-            />
+            <input type="checkbox" className="w-5" id="fixa" checked={isDespesaFixa} onChange={(e) => setIsDespesaFixa(e.target.checked)} />
           </div>
 
           <div className="grid grid-cols-2 gap-2">
             <Button className="w-full" variant="outline" onClick={() => setIsOpen(false)}>
               Cancelar
             </Button>
-            <Button className="w-full" >
-              Confirmar
-            </Button>
+            <Button className="w-full">Confirmar</Button>
           </div>
 
-          {editar && <Button onClick={handleExcluir} variant="destructive">Excluir</Button>}
+          {editar && (
+            <Button onClick={handleExcluir} variant="destructive">
+              Excluir
+            </Button>
+          )}
         </form>
 
         <DialogFooter></DialogFooter>

@@ -54,10 +54,13 @@ export default function Ajustes() {
 
   async function handleEditar(id) {
     const response = await consultarDespesa(id);
-    setDataServico(response)
+    setDataServico(response);
     setIsEditar(true);
     setIsModalDespesa(true);
+  }
 
+  async function editarServicoCabelo(servico) {
+    console.log(servico);
   }
 
   async function handleServicoCabelo(servico) {
@@ -85,11 +88,16 @@ export default function Ajustes() {
   }
 
   useEffect(() => {
+    if (isModalDespesa) return;
+    listarDespesas();
+  }, [isModalDespesa]);
+
+
+  useEffect(() => {
     listarCabelos();
     listarBarbas();
     listarSobrancelhas();
     listarAdicionais();
-    listarDespesas();
   }, []);
 
   return (
@@ -126,7 +134,8 @@ export default function Ajustes() {
               onClick={handleEditar}
               tipo="despesa"
               nome={item?.nome_despesa}
-              valor={item?.valor_despesa} />
+              valor={item?.valor_despesa}
+            />
           ))}
         </section>
         <h2 className="text-white heading-2">Configurações</h2>
@@ -150,14 +159,16 @@ export default function Ajustes() {
         </section>
         <section className="flex w-full justify-end">
           <div className="h-20">
-            <Button onClick={() => {
-              setIsEditar(false);
-              setIsModalDespesa([]);
-
-            }} variant="destructive" className="fixed bottom-11 right-30">
+            <Button
+              onClick={() => {
+                setIsEditar(false);
+                setIsModalDespesa([]);
+              }}
+              variant="destructive"
+              className="fixed bottom-11 right-30"
+            >
               <Plus /> Despesa
             </Button>
-
           </div>
         </section>
       </section>

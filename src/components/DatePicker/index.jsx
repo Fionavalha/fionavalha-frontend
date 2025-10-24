@@ -14,13 +14,9 @@ export function DatePicker({ label, date, setDate, disabled = false, active = tr
       <Label htmlFor="date" className="px-1">
         {label}
       </Label>
-      <Popover open={active && open} onOpenChange={active && setOpen}>
+      <Popover open={active && open} onOpenChange={(state) => active && setOpen(state)}>
         <PopoverTrigger asChild>
-          <Button
-            variant="outline"
-            id="date"
-            className={`w-full justify-between font-normal ${!active && "bg-gray-200 text-gray-400 hover:bg-gray-200 hover:text-gray-400 cursor-not-allowed"}`}
-          >
+          <Button variant="outline" id="date" className={`w-full justify-between font-normal ${!active && "bg-gray-200 text-gray-400 hover:bg-gray-200 hover:text-gray-400 cursor-not-allowed"}`}>
             {date ? date.toLocaleDateString() : "Selecione a data"}
             <ChevronDownIcon />
           </Button>
