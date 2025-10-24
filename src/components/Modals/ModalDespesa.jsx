@@ -28,7 +28,7 @@ export default function ModalDespesa({ isOpen, setIsOpen, dataServico, editar = 
       }
       setIsOpen(false);
     } catch (error) {
-      toast.error(error.message || "Erro ao salvar despesa.");
+      toast.error("Erro ao salvar despesa.");
     }
   }
 
