@@ -10,8 +10,6 @@ import { replace, useNavigate } from "react-router";
 import { Lock } from "lucide-react";
 import { formatarDataPtBr } from "../../utils/formatador";
 import ModalServicoPersonalizado from "../../components/Modals/ModalServicoPersonalizado";
-import { tr } from "date-fns/locale/tr";
-
 
 export default function Ajustes() {
   const [dataCabelos, setDataCabelos] = useState([]);
@@ -54,7 +52,7 @@ export default function Ajustes() {
     setIsModalDespesa(true);
   }
 
-  
+
   async function handleServicoCabelo(servico) {
     setDateServico({ ...servico, tipo: "cabelo" })
     SetEditarIs(true)
@@ -78,12 +76,12 @@ export default function Ajustes() {
     SetEditarIs(true)
     setIsModalServico(true)
   }
-  
+
   useEffect(() => {
     if (isModalDespesa) return;
     listarDespesas();
   }, [isModalDespesa]);
-  
+
   useEffect(() => {
     listarCabelos();
     listarBarbas();
@@ -100,7 +98,6 @@ export default function Ajustes() {
         <h2 className="text-white heading-2">Serviços</h2>
         <section className="flex flex-col gap-y-4 w-full items-center">
           {dataCabelos?.map((item) => (
-            
             <CardServico key={item?.id_cabelo} onClick={() => handleServicoCabelo(item)} nome={item?.nome_cabelo} valor={item?.valor_cabelo} />
           ))}
 
