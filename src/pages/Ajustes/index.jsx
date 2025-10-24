@@ -9,6 +9,9 @@ import ModalDespesa from "../../components/Modals/ModalDespesa";
 import { replace, useNavigate } from "react-router";
 import { Lock } from "lucide-react";
 import { formatarDataPtBr } from "../../utils/formatador";
+import ModalServicoPersonalizado from "../../components/Modals/ModalServicoPersonalizado";
+import { tr } from "date-fns/locale/tr";
+
 
 export default function Ajustes() {
   const [dataCabelos, setDataCabelos] = useState([]);
@@ -19,33 +22,31 @@ export default function Ajustes() {
   const [isModalDespesa, setIsModalDespesa] = useState(false);
   const [dataServico, setDataServico] = useState([]);
   const [isEditar, setIsEditar] = useState(false);
+  const [IsModalServico, setIsModalServico] = useState(false)
+  const [editarIs, SetEditarIs] = useState(false)
+  const [dateServico, setDateServico] = useState([])
   const navigate = useNavigate();
 
   async function listarCabelos() {
     const response = await consultarCabelos();
     setDataCabelos(response);
   }
-
   async function listarBarbas() {
     const response = await consultarBarbas();
     setDataBarbas(response);
   }
-
   async function listarSobrancelhas() {
     const response = await consultarSobrancelhas();
     setDataSobrancelhas(response);
   }
-
   async function listarAdicionais() {
     const response = await consultarAdicionais();
     setDataAdicionais(response);
   }
-
   async function listarDespesas() {
     const response = await consultarDespesas();
     setDataDespesas(response);
   }
-
   async function handleEditar(id) {
     const response = await consultarDespesa(id);
     setDataServico(response);
@@ -53,43 +54,66 @@ export default function Ajustes() {
     setIsModalDespesa(true);
   }
 
-  async function editarServicoCabelo(servico) {
-    console.log(servico);
+  
+  async function handleServicoCabelo(servico) {
+    setDateServico({ ...servico, tipo: "cabelo" })
+    SetEditarIs(true)
+    setIsModalServico(true)
   }
-
+  
+  async function handleServicoBarba(servico) {
+    setDateServico({ ...servico, tipo: "barba" })
+    SetEditarIs(true)
+    setIsModalServico(true)
+  }
+  
+  async function handleServicoSobrancelha(servico) {
+    setDateServico({ ...servico, tipo: "sobrancelha" })
+    SetEditarIs(true)
+    setIsModalServico(true)
+  }
+  
+  async function handleServicoAdicionais(servico) {
+    setDateServico({ ...servico, tipo: "adicionais" })
+    SetEditarIs(true)
+    setIsModalServico(true)
+  }
+  
   useEffect(() => {
     if (isModalDespesa) return;
     listarDespesas();
   }, [isModalDespesa]);
-
+  
   useEffect(() => {
     listarCabelos();
     listarBarbas();
     listarSobrancelhas();
     listarAdicionais();
   }, []);
-
+  
   return (
     <>
       <ModalDespesa isOpen={isModalDespesa} setIsOpen={setIsModalDespesa} editar={isEditar} dataServico={dataServico} />
+      <ModalServicoPersonalizado isOpen={IsModalServico} setIsOpen={setIsModalServico} editar={editarIs} dateServico={dateServico} />
 
       <section className="flex flex-col mt-2 items-center gap-y-5 min-h-screen">
         <h2 className="text-white heading-2">Serviços</h2>
         <section className="flex flex-col gap-y-4 w-full items-center">
           {dataCabelos?.map((item) => (
-            <CardServico key={item?.id_cabelo} nome={item?.nome_cabelo} valor={item?.valor_cabelo} onClick={() => editarServicoCabelo(item)} />
+            
+            <CardServico key={item?.id_cabelo} onClick={() => handleServicoCabelo(item)} nome={item?.nome_cabelo} valor={item?.valor_cabelo} />
           ))}
 
           {dataBarbas?.map((item) => (
-            <CardServico key={item?.id_barba} nome={item?.nome_barba} valor={item?.valor_barba} />
+            <CardServico key={item?.id_barba} onClick={() => handleServicoBarba(item)} nome={item?.nome_barba} valor={item?.valor_barba} />
           ))}
 
           {dataSobrancelhas?.map((item) => (
-            <CardServico key={item?.id_sobrancelha} nome={item?.nome_sobrancelha} valor={item?.valor_sobrancelha} />
+            <CardServico key={item?.id_sobrancelha} onClick={() => handleServicoSobrancelha(item)} nome={item?.nome_sobrancelha} valor={item?.valor_sobrancelha} />
           ))}
 
           {dataAdicionais?.map((item) => (
-            <CardServico key={item?.id_adicional} nome={item?.nome_adicional} valor={item?.valor_adicional} />
+            <CardServico key={item?.id_adicional} onClick={() => handleServicoAdicionais(item)} nome={item?.nome_adicional} valor={item?.valor_adicional} />
           ))}
         </section>
         <h2 className="text-white heading-2">Despesas</h2>
