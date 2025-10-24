@@ -59,6 +59,18 @@ export async function consultarCabelos() {
   }
 }
 
+
+export async function editarCabelo(id, pNome, pValor) {
+  try {
+    await api.put("/cabelos/" + id, {
+      nome_cabelo: pNome,
+      valor_cabelo: pValor,
+    })
+  } catch (error) {
+    console.error(error)
+  }
+};
+
 export async function consultarBarbas() {
   try {
     const response = await api.get("/barbas");
@@ -68,6 +80,17 @@ export async function consultarBarbas() {
     return [];
   }
 }
+
+export async function editarBarba(id, pNome, pValor) {
+  try {
+    await api.put("/barbas/" + id, {
+      nome_barba: pNome,
+      valor_barba: pValor,
+    })
+  } catch (error) {
+    console.error(error)
+  }
+};
 
 export async function consultarSobrancelhas() {
   try {
@@ -79,6 +102,17 @@ export async function consultarSobrancelhas() {
   }
 }
 
+export async function editarSobrancelha(id, pNome, pValor) {
+  try {
+    await api.put("/sobrancelhas/" + id, {
+      nome_sobrancelha: pNome,
+      valor_barba: pValor,
+    })
+  } catch (error) {
+    console.error(error)
+  }
+};
+
 export async function consultarAdicionais() {
   try {
     const response = await api.get("/adicionais");
@@ -88,6 +122,17 @@ export async function consultarAdicionais() {
     return [];
   }
 }
+
+export async function editarAdicionais(id, pNome, pValor) {
+  try {
+    await api.put("/adicionais/" + id, {
+      nome_adicional: pNome,
+      valor_adicional: pValor,
+    })
+  } catch (error) {
+    console.error(error)
+  }
+};
 
 export async function consultarFormasPagamento() {
   try {
