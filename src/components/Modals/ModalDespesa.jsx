@@ -47,6 +47,14 @@ export default function ModalDespesa({ isOpen, setIsOpen, dataServico, editar = 
   useEffect(() => {
     if (!isOpen) return;
 
+    if (!isDespesaFixa) {
+      setData(null);
+    }
+  }, [isDespesaFixa]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
     if (editar && dataServico?.length > 0) {
       const item = dataServico[0];
       setNomeDespesa(item.nome_despesa ?? "");

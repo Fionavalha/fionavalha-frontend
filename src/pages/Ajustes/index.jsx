@@ -67,7 +67,6 @@ export default function Ajustes() {
     listarBarbas();
     listarSobrancelhas();
     listarAdicionais();
-    listarDespesas();
   }, []);
 
   return (
