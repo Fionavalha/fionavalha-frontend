@@ -1,4 +1,4 @@
-import { Plus } from "lucide-react";
+import { ArrowLeft, Plus } from "lucide-react";
 import Contador from "../../components/Contador";
 import Rodape from "../../components/Rodape";
 import { useEffect, useState } from "react";
@@ -6,8 +6,10 @@ import { ModalServico } from "../../components/Modals/ModalServico";
 import { alterarNumeroClientes, alterarStatusBarbearia, consultarItensServicoRealizado, consultarServicosRealizados, consultarStatusBarbearia } from "../../services/api";
 import CardServico from "../../components/CardServico";
 import { AlertaConfirmacao } from "../../components/AlertaConfirmacao";
+import {  useNavigate } from "react-router";
 
 export default function Inicio() {
+  const navigate = useNavigate();
   const [aberto, setAberto] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [dataServicos, setDataSevicos] = useState([]);
@@ -83,6 +85,9 @@ export default function Inicio() {
       />
 
       <div className="flex flex-col h-dvh relative mt-4">
+        <div className="px-3">
+          <ArrowLeft className="text-white w-10 h-10 cursor-pointer hover:text-brand-primary" onClick={() => navigate("/", { replace: true })} />
+        </div>
         <section className="flex flex-col gap-y-4">
           <section className="flex flex-col items-center">
             <div className="flex flex-col gap-2 w-70 h-auto">

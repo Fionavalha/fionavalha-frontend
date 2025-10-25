@@ -153,7 +153,7 @@ export default function Ajustes() {
                 setIsModalDespesa([]);
               }}
               variant="destructive"
-              className="fixed bottom-11 right-30"
+              className="fixed bottom-11 right-1"
             >
               <Plus /> Despesa
             </Button>
