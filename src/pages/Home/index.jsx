@@ -24,6 +24,12 @@ export default function Home() {
 
   useEffect(() => {
     listarBarbearias();
+
+    const interval = setInterval(() => {
+      listarBarbearias();
+    }, 5000);
+
+    return () => clearInterval(interval);
   }, []);
 
   return (
