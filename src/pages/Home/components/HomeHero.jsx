@@ -17,7 +17,7 @@ export default function HomeHero({ numeroClientes, isSalaoAberto, horarioInicio,
           BARBEARIA <br /> FIO NAVALHA
         </h1>
         <h3 className="text-body-bold text-white text-center">
-          Horário de funcionamento: <strong>{horarioInicio}</strong> às <strong>{horarioFim}</strong>
+          Horário de funcionamento: Seg à Sab / <strong>{horarioInicio}</strong> às <strong>{horarioFim}</strong>
         </h3>
 
         <div>
