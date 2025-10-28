@@ -13,6 +13,7 @@ export default function Home() {
   const [numeroClientes, setNumeroClientes] = useState(0);
   const [horarioInicio, setHorarioInicio] = useState("");
   const [horarioFim, setHorarioFim] = useState("");
+  const [numeroTelefone, setNumeroTelefone] = useState("");
 
   async function listarBarbearias() {
     const response = await consultarBarbearias();
@@ -20,6 +21,7 @@ export default function Home() {
     setIsSalaoAberto(response.status === "ABERTO");
     setHorarioInicio(response.horario_inicio);
     setHorarioFim(response.horario_fim);
+    setNumeroTelefone(response.telefone);
   }
 
   useEffect(() => {
@@ -42,7 +44,7 @@ export default function Home() {
 
         <Tooltip>
           <TooltipTrigger asChild>
-            <a href="https://api.whatsapp.com/send?phone=5567999456400&text=Já%20estou%20chegando,%20Pinja!" className="fixed bottom-8 right-4 w-16 h-16" target="_blank">
+            <a href={`https://api.whatsapp.com/send?phone=55${numeroTelefone}&text=Já%20estou%20chegando,%20Pinja!`} className="fixed bottom-8 right-4 w-16 h-16" target="_blank">
               <img src={whatsapp} alt="Botao whatsapp" />
             </a>
           </TooltipTrigger>
