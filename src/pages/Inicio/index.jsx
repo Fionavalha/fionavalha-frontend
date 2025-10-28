@@ -3,10 +3,17 @@ import Contador from "../../components/Contador";
 import Rodape from "../../components/Rodape";
 import { useEffect, useState } from "react";
 import { ModalServico } from "../../components/Modals/ModalServico";
-import { alterarNumeroClientes, alterarStatusBarbearia, consultarItensServicoRealizado, consultarServicosRealizados, consultarStatusBarbearia } from "../../services/api";
+import {
+  alterarNumeroClientes,
+  alterarStatusBarbearia,
+  consultarItensServicoRealizado,
+  consultarNumeroClientes,
+  consultarServicosRealizados,
+  consultarStatusBarbearia,
+} from "../../services/api";
 import CardServico from "../../components/CardServico";
 import { AlertaConfirmacao } from "../../components/AlertaConfirmacao";
-import {  useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 
 export default function Inicio() {
   const navigate = useNavigate();
@@ -22,8 +29,10 @@ export default function Inicio() {
     const agora = new Date();
     const local = new Date(agora.getTime() - agora.getTimezoneOffset() * 60000);
     const dataFormatada = local.toISOString().split("T")[0];
-    const response = await consultarServicosRealizados(dataFormatada);
-    setDataSevicos(response);
+    const dataServicos = await consultarServicosRealizados(dataFormatada);
+    const numeroClientes = await consultarNumeroClientes();
+    setDataSevicos(dataServicos);
+    setContador(numeroClientes);
   }
 
   async function handleStatus() {
@@ -72,7 +81,14 @@ export default function Inicio() {
 
   return (
     <>
-      {openModal && <ModalServico isModalOpen={openModal} setIsModalOpen={setOpenModal} editar={isEditar} dataServico={dataServico} />}
+      {openModal && (
+        <ModalServico
+          isModalOpen={openModal}
+          setIsModalOpen={setOpenModal}
+          editar={isEditar}
+          dataServico={dataServico}
+        />
+      )}
       <AlertaConfirmacao
         isModalOpen={showConfirmacaoFechar}
         setIsModalOpen={setShowConfirmacaoFechar}
@@ -86,7 +102,10 @@ export default function Inicio() {
 
       <div className="flex flex-col h-dvh relative mt-4">
         <div className="px-3">
-          <ArrowLeft className="text-white w-10 h-10 cursor-pointer hover:text-brand-primary" onClick={() => navigate("/", { replace: true })} />
+          <ArrowLeft
+            className="text-white w-10 h-10 cursor-pointer hover:text-brand-primary"
+            onClick={() => navigate("/", { replace: true })}
+          />
         </div>
         <section className="flex flex-col gap-y-4">
           <section className="flex flex-col items-center">
@@ -96,10 +115,16 @@ export default function Inicio() {
               </h1>
               <div className="flex justify-center">
                 <button
-                  onClick={() => (aberto ? setShowConfirmacaoFechar(true) : handleStatus())}
+                  onClick={() =>
+                    aberto ? setShowConfirmacaoFechar(true) : handleStatus()
+                  }
                   className={`
                     flex flex-col items-center justify-center rounded-xl border text-white w-35 h-9 transition font-bold
-                    ${aberto ? "bg-feedback-success cursor-pointer border-feedback-success" : "bg-feedback-error border-feedback-error"}
+                    ${
+                      aberto
+                        ? "bg-feedback-success cursor-pointer border-feedback-success"
+                        : "bg-feedback-error border-feedback-error"
+                    }
                   `}
                 >
                   {aberto ? "Aberto" : "Fechado"}
@@ -131,6 +156,9 @@ export default function Inicio() {
         <div className="fixed bottom-21 right-5 z-20">
           <button
             onClick={() => {
+              if (contador === 0) {
+                setContador(1);
+              }
               setIsEditar(false);
               setDataServico([]);
               setOpenModal(true);
