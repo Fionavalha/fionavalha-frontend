@@ -10,7 +10,7 @@ export default function HomeServicos() {
 
   async function listarCortes() {
     const cacheKey = "cortesCache";
-    const cacheExpiracao = 24 * 60 * 60 * 1000;
+    const cacheExpiracao = 4 * 60 * 60 * 1000;
 
     const cache = localStorage.getItem(cacheKey);
     if (cache) {
