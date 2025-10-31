@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const api = axios.create({
-  baseURL: "http://192.168.3.66:3000/",
+  baseURL: "http://localhost:3000/",
 });
 
 api.interceptors.request.use(
@@ -319,11 +319,31 @@ export async function consultarHorario() {
   }
 }
 
-export async function EditarHora(pHorario_inicio, pHorario_fim) {
+export async function editarHora(pHorario_inicio, pHorario_fim) {
   try {
     await api.put(`/barbearias/horario`, {
       horario_inicio: pHorario_inicio,
       horario_fim: pHorario_fim,
+    });
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function consultarAdicional() {
+  try {
+    let response;
+    response = await api.get(`/barbearias/adicional-forma-pagamento`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function editarAdicional(pAdicionalFormaPagamento) {
+  try {
+    await api.put(`/barbearias/adicional-forma-pagamento`, {
+     adicional_forma_pagamento: pAdicionalFormaPagamento,
     });
   } catch (error) {
     console.error(error);
