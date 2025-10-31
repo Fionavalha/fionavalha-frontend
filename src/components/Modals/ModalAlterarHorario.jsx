@@ -2,7 +2,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Button } from "../ui/button";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { EditarHora } from "../../services/api";
+import { editarHora } from "../../services/api";
 
 export default function ModalAlterarHorario({ isOpen, setIsOpen, dateHorario, editar = false }) {
   const [horarioInicio, setHorarioInicio] = useState("");
@@ -15,12 +15,12 @@ export default function ModalAlterarHorario({ isOpen, setIsOpen, dateHorario, ed
       toast.error("Por favor, preencha os dois horários.");
       return;
     }
-
+    
     try {
       if (editar) {
-        await EditarHora(dateHorario, horarioInicio, horarioFim);
+        await editarHora(horarioInicio, horarioFim);
         toast.success("Horário editado com sucesso!");
-      } 
+      }
       setIsOpen(false);
     } catch (error) {
       console.error(error);

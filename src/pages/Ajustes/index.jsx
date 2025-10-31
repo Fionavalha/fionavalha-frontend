@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
-import { consultarAdicionais, consultarBarbas, consultarCabelos, consultarDespesa, consultarDespesas, consultarHorario, consultarSobrancelhas } from "../../services/api";
+import { consultarAdicionais, consultarAdicional, consultarBarbas, consultarCabelos, consultarDespesa, consultarDespesas, consultarHorario, consultarSobrancelhas } from "../../services/api";
 import CardServico from "../../components/CardServico";
 import Rodape from "../../components/Rodape";
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,7 @@ import { Lock } from "lucide-react";
 import { formatarDataPtBr } from "../../utils/formatador";
 import ModalServicoPersonalizado from "../../components/Modals/ModalServicoPersonalizado";
 import ModalAlterarHorario from "../../components/Modals/ModalAlterarHorario";
+import ModalAlterarAdicional from "../../components/Modals/ModalAlterarAdicional.jsx";
 
 export default function Ajustes() {
   const [dataCabelos, setDataCabelos] = useState([]);
@@ -26,6 +27,9 @@ export default function Ajustes() {
   const [IsmodalHorario, setIsmodalHorario] = useState(false)
   const [dataHorario, setDataHorario] = useState([])
   const [Editar, setEditar] = useState(false)
+  const [IsmodalAdicional, setIsmodalAdicional] = useState(false)
+  const [dataAdicional, setDataAdicional] = useState([])
+  const [editar, setEditarIS] = useState(false)
   const [dateServico, setDateServico] = useState([]);
   const navigate = useNavigate();
 
@@ -85,7 +89,13 @@ export default function Ajustes() {
     setDataHorario(response)
     setEditar(true);
     setIsmodalHorario(true);
+  }
 
+  async function handleAdicional() {
+    const response = await consultarAdicional();
+    setDataAdicional(response)
+    setEditarIS(true)
+    setIsmodalAdicional(true)
   }
 
   useEffect(() => {
@@ -105,6 +115,7 @@ export default function Ajustes() {
       <ModalDespesa isOpen={isModalDespesa} setIsOpen={setIsModalDespesa} editar={isEditar} dataServico={dataServico} />
       <ModalServicoPersonalizado isOpen={IsModalServico} setIsOpen={setIsModalServico} editar={editarIs} dateServico={dateServico} />
       <ModalAlterarHorario isOpen={IsmodalHorario} setIsOpen={setIsmodalHorario} editar={Editar} dateHorario={dataHorario} />
+      <ModalAlterarAdicional isOpen={IsmodalAdicional} setIsOpen={setIsmodalAdicional} editar={editar} dateAdicional={dataAdicional} />
       <section className="flex flex-col mt-2 items-center gap-y-5 min-h-screen">
         <h2 className="text-white heading-2">Serviços</h2>
         <section className="flex flex-col gap-y-4 w-full items-center">
@@ -144,7 +155,7 @@ export default function Ajustes() {
             <CalendarClock />
             Alterar Horário de Funcionamento
           </Button>
-          <Button variant="outline" className="w-9/10 max-w-90">
+          <Button onClick={handleAdicional} variant="outline" className="w-9/10 max-w-90">
             <Coins />
             Alterar Val. Adicionais Pagamento
           </Button>
