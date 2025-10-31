@@ -11,7 +11,7 @@ import { Lock } from "lucide-react";
 import { formatarDataPtBr } from "../../utils/formatador";
 import ModalServicoPersonalizado from "../../components/Modals/ModalServicoPersonalizado";
 import ModalAlterarHorario from "../../components/Modals/ModalAlterarHorario";
-import ModalAlterarAdicional from "../../components/Modals/ModalAlterarAdicional.jsx";
+import ModalAdicionalPagamento from "../../components/Modals/ModalAdicionalPagamento.jsx";
 
 export default function Ajustes() {
   const [dataCabelos, setDataCabelos] = useState([]);
@@ -19,18 +19,21 @@ export default function Ajustes() {
   const [dataSobrancelhas, setDataSobrancelhas] = useState([]);
   const [dataAdicionais, setDataAdicionais] = useState([]);
   const [dataDespesas, setDataDespesas] = useState([]);
-  const [isModalDespesa, setIsModalDespesa] = useState(false);
+  const [dataAdicional, setDataAdicional] = useState([]);
+  const [dataHorario, setDataHorario] = useState([]);
   const [dataServico, setDataServico] = useState([]);
-  const [isEditar, setIsEditar] = useState(false);
-  const [IsModalServico, setIsModalServico] = useState(false);
-  const [editarIs, SetEditarIs] = useState(false);
-  const [IsmodalHorario, setIsmodalHorario] = useState(false)
-  const [dataHorario, setDataHorario] = useState([])
-  const [Editar, setEditar] = useState(false)
-  const [IsmodalAdicional, setIsmodalAdicional] = useState(false)
-  const [dataAdicional, setDataAdicional] = useState([])
-  const [editar, setEditarIS] = useState(false)
-  const [dateServico, setDateServico] = useState([]);
+  const [dataServicoPersonalizado, setDataServicoPersonalizado] = useState([]);
+
+  const [isModalDespesa, setIsModalDespesa] = useState(false);
+  const [isModalServico, setIsModalServico] = useState(false);
+  const [isModalHorario, setIsModalHorario] = useState(false);
+  const [isModalAdicional, setIsModalAdicional] = useState(false);
+
+  const [isEditarDespesa, setIsEditarDespesa] = useState(false);
+  const [isEditarHorario, setIsEditarHorario] = useState(false);
+  const [isEditarAdicionalPagamento, setIsEditarAdicionalPagamento] = useState(false);
+  const [isEditarServicoPersonalizado, setIsEditarServicoPersonalizado] = useState(false);
+
   const navigate = useNavigate();
 
   async function listarCabelos() {
@@ -56,46 +59,46 @@ export default function Ajustes() {
   async function handleEditar(id) {
     const response = await consultarDespesa(id);
     setDataServico(response);
-    setIsEditar(true);
+    setIsEditarDespesa(true);
     setIsModalDespesa(true);
   }
 
   async function handleServicoCabelo(servico) {
-    setDateServico({ ...servico, tipo: "cabelo" });
-    SetEditarIs(true);
+    setDataServicoPersonalizado({ ...servico, tipo: "cabelo" });
+    setIsEditarServicoPersonalizado(true);
     setIsModalServico(true);
   }
 
   async function handleServicoBarba(servico) {
-    setDateServico({ ...servico, tipo: "barba" });
-    SetEditarIs(true);
+    setDataServicoPersonalizado({ ...servico, tipo: "barba" });
+    setIsEditarServicoPersonalizado(true);
     setIsModalServico(true);
   }
 
   async function handleServicoSobrancelha(servico) {
-    setDateServico({ ...servico, tipo: "sobrancelha" });
-    SetEditarIs(true);
+    setDataServicoPersonalizado({ ...servico, tipo: "sobrancelha" });
+    setIsEditarServicoPersonalizado(true);
     setIsModalServico(true);
   }
 
   async function handleServicoAdicionais(servico) {
-    setDateServico({ ...servico, tipo: "adicionais" });
-    SetEditarIs(true);
+    setDataServicoPersonalizado({ ...servico, tipo: "adicionais" });
+    setIsEditarServicoPersonalizado(true);
     setIsModalServico(true);
   }
 
   async function handleHorario() {
     const response = await consultarHorario();
-    setDataHorario(response)
-    setEditar(true);
-    setIsmodalHorario(true);
+    setDataHorario(response);
+    setIsEditarHorario(true);
+    setIsModalHorario(true);
   }
 
   async function handleAdicional() {
     const response = await consultarAdicional();
-    setDataAdicional(response)
-    setEditarIS(true)
-    setIsmodalAdicional(true)
+    setDataAdicional(response);
+    setIsEditarAdicionalPagamento(true);
+    setIsModalAdicional(true);
   }
 
   useEffect(() => {
@@ -104,18 +107,20 @@ export default function Ajustes() {
   }, [isModalDespesa]);
 
   useEffect(() => {
+    if (isModalServico) return;
     listarCabelos();
     listarBarbas();
     listarSobrancelhas();
     listarAdicionais();
-  }, []);
+  }, [isModalServico]);
 
   return (
     <>
-      <ModalDespesa isOpen={isModalDespesa} setIsOpen={setIsModalDespesa} editar={isEditar} dataServico={dataServico} />
-      <ModalServicoPersonalizado isOpen={IsModalServico} setIsOpen={setIsModalServico} editar={editarIs} dateServico={dateServico} />
-      <ModalAlterarHorario isOpen={IsmodalHorario} setIsOpen={setIsmodalHorario} editar={Editar} dateHorario={dataHorario} />
-      <ModalAlterarAdicional isOpen={IsmodalAdicional} setIsOpen={setIsmodalAdicional} editar={editar} dateAdicional={dataAdicional} />
+      <ModalDespesa isOpen={isModalDespesa} setIsOpen={setIsModalDespesa} editar={isEditarDespesa} dataServico={dataServico} />
+      <ModalServicoPersonalizado isOpen={isModalServico} setIsOpen={setIsModalServico} editar={isEditarServicoPersonalizado} data={dataServicoPersonalizado} />
+      <ModalAlterarHorario isOpen={isModalHorario} setIsOpen={setIsModalHorario} editar={isEditarHorario} dateHorario={dataHorario} />
+      <ModalAdicionalPagamento isOpen={isModalAdicional} setIsOpen={setIsModalAdicional} editar={isEditarAdicionalPagamento} dateAdicional={dataAdicional} />
+
       <section className="flex flex-col mt-2 items-center gap-y-5 min-h-screen">
         <h2 className="text-white heading-2">Serviços</h2>
         <section className="flex flex-col gap-y-4 w-full items-center">
@@ -172,7 +177,7 @@ export default function Ajustes() {
           <div className="h-20">
             <Button
               onClick={() => {
-                setIsEditar(false);
+                setIsEditarDespesa(false);
                 setIsModalDespesa([]);
               }}
               variant="destructive"
