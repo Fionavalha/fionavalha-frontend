@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
-import { consultarAdicionais, consultarBarbas, consultarCabelos, consultarDespesa, consultarDespesas, consultarSobrancelhas } from "../../services/api";
+import { consultarAdicionais, consultarBarbas, consultarCabelos, consultarDespesa, consultarDespesas, consultarHorario, consultarSobrancelhas } from "../../services/api";
 import CardServico from "../../components/CardServico";
 import Rodape from "../../components/Rodape";
 import { Button } from "@/components/ui/button";
@@ -10,6 +10,7 @@ import { replace, useNavigate } from "react-router";
 import { Lock } from "lucide-react";
 import { formatarDataPtBr } from "../../utils/formatador";
 import ModalServicoPersonalizado from "../../components/Modals/ModalServicoPersonalizado";
+import ModalAlterarHorario from "../../components/Modals/ModalAlterarHorario";
 
 export default function Ajustes() {
   const [dataCabelos, setDataCabelos] = useState([]);
@@ -22,6 +23,9 @@ export default function Ajustes() {
   const [isEditar, setIsEditar] = useState(false);
   const [IsModalServico, setIsModalServico] = useState(false);
   const [editarIs, SetEditarIs] = useState(false);
+  const [IsmodalHorario, setIsmodalHorario] = useState(false)
+  const [dataHorario, setDataHorario] = useState([])
+  const [Editar, setEditar] = useState(false)
   const [dateServico, setDateServico] = useState([]);
   const navigate = useNavigate();
 
@@ -76,6 +80,14 @@ export default function Ajustes() {
     setIsModalServico(true);
   }
 
+  async function handleHorario() {
+    const response = await consultarHorario();
+    setDataHorario(response)
+    setEditar(true);
+    setIsmodalHorario(true);
+
+  }
+
   useEffect(() => {
     if (isModalDespesa) return;
     listarDespesas();
@@ -92,7 +104,7 @@ export default function Ajustes() {
     <>
       <ModalDespesa isOpen={isModalDespesa} setIsOpen={setIsModalDespesa} editar={isEditar} dataServico={dataServico} />
       <ModalServicoPersonalizado isOpen={IsModalServico} setIsOpen={setIsModalServico} editar={editarIs} dateServico={dateServico} />
-
+      <ModalAlterarHorario isOpen={IsmodalHorario} setIsOpen={setIsmodalHorario} editar={Editar} dateHorario={dataHorario} />
       <section className="flex flex-col mt-2 items-center gap-y-5 min-h-screen">
         <h2 className="text-white heading-2">Serviços</h2>
         <section className="flex flex-col gap-y-4 w-full items-center">
@@ -128,7 +140,7 @@ export default function Ajustes() {
         </section>
         <h2 className="text-white heading-2">Configurações</h2>
         <section className="flex items-center flex-col w-full gap-4">
-          <Button variant="outline" className="w-9/10 max-w-90">
+          <Button onClick={handleHorario} variant="outline" className="w-9/10 max-w-90">
             <CalendarClock />
             Alterar Horário de Funcionamento
           </Button>

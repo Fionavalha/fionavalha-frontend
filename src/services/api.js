@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const api = axios.create({
-  baseURL: "http://192.168.2.103:3000",
+  baseURL: "http://192.168.3.66:3000/",
 });
 
 api.interceptors.request.use(
@@ -303,6 +303,27 @@ export async function alterarStatusBarbearia(status) {
   try {
     await api.put(`/barbearias/status`, {
       status,
+    });
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function consultarHorario() {
+  try {
+    let response;
+    response = await api.get(`/barbearias/horario`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function EditarHora(pHorario_inicio, pHorario_fim) {
+  try {
+    await api.put(`/barbearias/horario`, {
+      horario_inicio: pHorario_inicio,
+      horario_fim: pHorario_fim,
     });
   } catch (error) {
     console.error(error);
