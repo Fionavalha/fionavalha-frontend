@@ -1,11 +1,23 @@
 import axios from "axios";
 
 export const api = axios.create({
-  baseURL: "http://192.168.3.66:3000",
-  headers: {
-    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJub21lX2JhcmJlaXJvIjoiUElOSkEiLCJpYXQiOjE3NjAwMTUzNDR9.zgm9EK0uJ5R84jgADG5fDF4gN1MSvsG_z8qcm_hkcHw`,
-  },
+  baseURL: "http://localhost:3000/",
 });
+
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 export async function efetuarLogin(pNomeBarbeiro, pSenha) {
   try {
@@ -13,11 +25,27 @@ export async function efetuarLogin(pNomeBarbeiro, pSenha) {
       nome_barbeiro: pNomeBarbeiro,
       senha: pSenha,
     });
+    localStorage.setItem("token", response.data.token);
+    localStorage.setItem("nome_barbeiro", response.data.nome_barbeiro);
 
     return response.data;
   } catch (error) {
     console.error(error);
     throw error.response?.data?.erro || "Falha na comunicação com servidor";
+  }
+}
+
+export async function alterarSenha(pSenhaAntiga, pSenhaNova) {
+  try {
+    const response = await api.post("/alterar-senha", {
+      senha_antiga: pSenhaAntiga,
+      senha_nova: pSenhaNova,
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error.response?.data?.mensagem || "Falha na comunicação com o servidor";
   }
 }
 
@@ -31,6 +59,18 @@ export async function consultarCabelos() {
   }
 }
 
+
+export async function editarCabelo(id, pNome, pValor) {
+  try {
+    await api.put("/cabelos/" + id, {
+      nome_cabelo: pNome,
+      valor_cabelo: pValor,
+    })
+  } catch (error) {
+    console.error(error)
+  }
+};
+
 export async function consultarBarbas() {
   try {
     const response = await api.get("/barbas");
@@ -40,6 +80,17 @@ export async function consultarBarbas() {
     return [];
   }
 }
+
+export async function editarBarba(id, pNome, pValor) {
+  try {
+    await api.put("/barbas/" + id, {
+      nome_barba: pNome,
+      valor_barba: pValor,
+    })
+  } catch (error) {
+    console.error(error)
+  }
+};
 
 export async function consultarSobrancelhas() {
   try {
@@ -51,6 +102,17 @@ export async function consultarSobrancelhas() {
   }
 }
 
+export async function editarSobrancelha(id, pNome, pValor) {
+  try {
+    await api.put("/sobrancelhas/" + id, {
+      nome_sobrancelha: pNome,
+      valor_barba: pValor,
+    })
+  } catch (error) {
+    console.error(error)
+  }
+};
+
 export async function consultarAdicionais() {
   try {
     const response = await api.get("/adicionais");
@@ -60,6 +122,17 @@ export async function consultarAdicionais() {
     return [];
   }
 }
+
+export async function editarAdicionais(id, pNome, pValor) {
+  try {
+    await api.put("/adicionais/" + id, {
+      nome_adicional: pNome,
+      valor_adicional: pValor,
+    })
+  } catch (error) {
+    console.error(error)
+  }
+};
 
 export async function consultarFormasPagamento() {
   try {
@@ -83,9 +156,9 @@ export async function adicionarServicoRealizado(pFormaPagamentoId, pValorTotal, 
     throw error.response?.data?.erro || "Falha ao confimar o serviço";
   }
 }
-export async function consultarServicosRealizados() {
+export async function consultarServicosRealizados(data = "") {
   try {
-    const response = await api.get("/servicos-realizados");
+    const response = await api.get(`/servicos-realizados?data=${data}`);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -156,16 +229,41 @@ export async function consultarDespesa(id) {
   }
 }
 
+export async function alterarNumeroClientes(numero_clientes) {
+  try {
+    await api.put(`/barbearias/numero-clientes`, {
+      numero_clientes,
+    });
+  } catch (error) {
+    console.error(error);
+  }
+}
 
-export async function editarDespesa(id, pNomeDespesa, pValorDespesa,pDataDespesa, pFixa) {
+export async function editarDespesa(id, pNomeDespesa, pValorDespesa, pDataDespesa, pFixa) {
   try {
     await api.put("/despesas/" + id, {
       nome_despesa: pNomeDespesa,
       valor_despesa: pValorDespesa,
       data_despesa: pDataDespesa || null,
-      fixa: pFixa
-
+      fixa: pFixa,
     });
+  } catch (error) {
+    console.error(error);
+  }
+}
+export async function consultarBarbearias() {
+  try {
+    const response = await api.get(`/barbearias`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function consultarNumeroClientes() {
+  try {
+    const response = await api.get(`/barbearias/numero-clientes`);
+    return response.data.numero_clientes;
   } catch (error) {
     console.error(error);
   }
@@ -177,7 +275,7 @@ export async function adicionarDespesaRealizada(pNomeDespesa, pValorDespesa, pDa
       nome_despesa: pNomeDespesa,
       valor_despesa: Number(pValorDespesa),
       data_despesa: pDataDespesa || null,
-      fixa: pFixa
+      fixa: pFixa,
     });
   } catch (error) {
     console.error(error);
@@ -188,6 +286,65 @@ export async function adicionarDespesaRealizada(pNomeDespesa, pValorDespesa, pDa
 export async function excluirDespesaRealizada(id) {
   try {
     await api.delete("/despesas/" + id);
+  } catch (error) {
+    console.error(error);
+  }
+}
+export async function consultarStatusBarbearia() {
+  try {
+    const response = await api.get(`/barbearias/status`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function alterarStatusBarbearia(status) {
+  try {
+    await api.put(`/barbearias/status`, {
+      status,
+    });
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function consultarHorario() {
+  try {
+    let response;
+    response = await api.get(`/barbearias/horario`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function editarHora(pHorario_inicio, pHorario_fim) {
+  try {
+    await api.put(`/barbearias/horario`, {
+      horario_inicio: pHorario_inicio,
+      horario_fim: pHorario_fim,
+    });
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function consultarAdicional() {
+  try {
+    let response;
+    response = await api.get(`/barbearias/adicional-forma-pagamento`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function editarAdicional(pAdicionalFormaPagamento) {
+  try {
+    await api.put(`/barbearias/adicional-forma-pagamento`, {
+     adicional_forma_pagamento: pAdicionalFormaPagamento,
+    });
   } catch (error) {
     console.error(error);
   }

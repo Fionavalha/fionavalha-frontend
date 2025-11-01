@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { efetuarLogin } from "../../services/api";
 import { Link, useNavigate } from "react-router";
 import { toast } from "sonner";
-import { CircleArrowLeft } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 
 export default function Login() {
   const [nome, setNome] = useState("");
@@ -22,11 +22,15 @@ export default function Login() {
     }
   }
 
+  useEffect(() => {
+    localStorage.clear();
+  }, []);
+
   return (
     <>
       <section className="h-svh flex flex-col">
         <Link to="/" className="p-2">
-          <CircleArrowLeft className="text-white w-10 h-10 cursor-pointer hover:text-brand-primary" />
+          <ArrowLeft className="text-white w-10 h-10 cursor-pointer hover:text-brand-primary" />
         </Link>
         <main className="flex flex-col justify-center items-center bg-ui-background grow">
           <form onSubmit={handleLogin} className="flex flex-col gap-y-6 items-center px-2 w-full max-w-96 text-white">

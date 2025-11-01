@@ -43,7 +43,7 @@ input[type=number] {
   }
 
   .heading-1 {
-    @apply text-3xl sm:text-5xl font-bold;
+    @apply text-4xl sm:text-5xl font-bold;
   }
 
   .heading-2 {
