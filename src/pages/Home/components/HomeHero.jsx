@@ -16,7 +16,7 @@ export default function HomeHero({ numeroClientes, isSalaoAberto, horarioInicio,
         <h1 className="heading-1 text-center leading-10 sm:leading-16 text-white">
           BARBEARIA <br /> FIO NAVALHA
         </h1>
-        <h3 className="text-body-bold text-white text-center">
+        <h3 className="text-body-bold text-white px-4 text-center">
           Horário de funcionamento: Seg à Sab / <strong>{horarioInicio}</strong> às <strong>{horarioFim}</strong>
         </h3>
 
@@ -31,8 +31,14 @@ export default function HomeHero({ numeroClientes, isSalaoAberto, horarioInicio,
 
       {isSalaoAberto && (
         <div className="text-white gap-y-2 pb-8">
-          <h2 className="heading-3 text-center">Clientes no salão:</h2>
-          <h2 className="heading-1 text-center">{numeroClientes}</h2>
+          {numeroClientes > 1 ? (
+            <>
+              <h2 className="heading-3 text-center">Clientes no salão:</h2>
+              <h2 className="heading-1 text-center">{numeroClientes}</h2>
+            </>
+          ) : (
+            <h2 className="heading-2 text-center">Disponível</h2>
+          )}
         </div>
       )}
     </section>
