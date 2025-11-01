@@ -1,10 +1,22 @@
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Button } from "../ui/button";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { editarAdicional } from "../../services/api";
 
-export default function ModalAlterarAdicional({ isOpen, setIsOpen, dateAdicional, editar = false }) {
+export default function ModalAdicionalPagamento({
+  isOpen,
+  setIsOpen,
+  dateAdicional,
+  editar = false,
+}) {
   const [adicional, setAdicional] = useState("");
 
   async function handleConfirmar(e) {
@@ -19,7 +31,7 @@ export default function ModalAlterarAdicional({ isOpen, setIsOpen, dateAdicional
       if (editar) {
         await editarAdicional(adicional);
         toast.success("Adicional editado com sucesso!");
-      } 
+      }
       setIsOpen(false);
     } catch (error) {
       console.error(error);
@@ -29,7 +41,6 @@ export default function ModalAlterarAdicional({ isOpen, setIsOpen, dateAdicional
   useEffect(() => {
     if (isOpen && dateAdicional) {
       setAdicional(dateAdicional.adicional_forma_pagamento || "");
-     
     } else if (isOpen && !dateAdicional) {
       setAdicional("");
     }

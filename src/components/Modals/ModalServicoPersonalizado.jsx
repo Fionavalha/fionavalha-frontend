@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { editarAdicionais, editarBarba, editarCabelo, editarSobrancelha } from "../../services/api";
 
-export default function ModalServicoPersonalizado({ isOpen, setIsOpen, dateServico, editar = false }) {
+export default function ModalServicoPersonalizado({ isOpen, setIsOpen, data, editar = false }) {
   const [nome, setNome] = useState("");
   const [valor, setValor] = useState("");
 
@@ -16,18 +16,18 @@ export default function ModalServicoPersonalizado({ isOpen, setIsOpen, dateServi
     }
     try {
       if (editar) {
-        switch (dateServico.tipo) {
+        switch (data.tipo) {
           case "cabelo":
-            await editarCabelo(dateServico.id_cabelo, nome.toLocaleUpperCase(), valor);
+            await editarCabelo(data.id_cabelo, nome.toLocaleUpperCase(), valor);
             break;
           case "barba":
-            await editarBarba(dateServico.id_barba, nome, valor);
+            await editarBarba(data.id_barba, nome, valor);
             break;
           case "sobrancelha":
-            await editarSobrancelha(dateServico.id_sobrancelha, nome, valor);
+            await editarSobrancelha(data.id_sobrancelha, nome, valor);
             break;
           case "adicionais":
-            await editarAdicionais(dateServico.id_adicional, nome, valor);
+            await editarAdicionais(data.id_adicional, nome, valor);
             break;
         }
         toast.success("Serviço editado com sucesso!");
@@ -41,23 +41,23 @@ export default function ModalServicoPersonalizado({ isOpen, setIsOpen, dateServi
   useEffect(() => {
     if (!isOpen) return;
 
-    if (editar && dateServico) {
-      switch (dateServico.tipo) {
+    if (editar && data) {
+      switch (data.tipo) {
         case "cabelo":
-          setNome(dateServico.nome_cabelo ?? "");
-          setValor(dateServico.valor_cabelo ?? "");
+          setNome(data.nome_cabelo ?? "");
+          setValor(data.valor_cabelo ?? "");
           break;
         case "barba":
-          setNome(dateServico.nome_barba ?? "");
-          setValor(dateServico.valor_barba ?? "");
+          setNome(data.nome_barba ?? "");
+          setValor(data.valor_barba ?? "");
           break;
         case "sobrancelha":
-          setNome(dateServico.nome_sobrancelha ?? "");
-          setValor(dateServico.valor_sobrancelha ?? "");
+          setNome(data.nome_sobrancelha ?? "");
+          setValor(data.valor_sobrancelha ?? "");
           break;
         case "adicionais":
-          setNome(dateServico.nome_adicional ?? "");
-          setValor(dateServico.valor_adicional ?? "");
+          setNome(data.nome_adicional ?? "");
+          setValor(data.valor_adicional ?? "");
           break;
         default:
           setNome("");
@@ -67,7 +67,7 @@ export default function ModalServicoPersonalizado({ isOpen, setIsOpen, dateServi
       setNome("");
       setValor("");
     }
-  }, [isOpen, editar, dateServico]);
+  }, [isOpen, editar, data]);
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
