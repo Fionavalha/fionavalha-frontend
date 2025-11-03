@@ -81,14 +81,7 @@ export default function Inicio() {
 
   return (
     <>
-      {openModal && (
-        <ModalServico
-          isModalOpen={openModal}
-          setIsModalOpen={setOpenModal}
-          editar={isEditar}
-          dataServico={dataServico}
-        />
-      )}
+      {openModal && <ModalServico isModalOpen={openModal} setIsModalOpen={setOpenModal} editar={isEditar} dataServico={dataServico} />}
       <AlertaConfirmacao
         isModalOpen={showConfirmacaoFechar}
         setIsModalOpen={setShowConfirmacaoFechar}
@@ -102,10 +95,7 @@ export default function Inicio() {
 
       <div className="flex flex-col h-dvh relative mt-4">
         <div className="px-3">
-          <ArrowLeft
-            className="text-white w-10 h-10 cursor-pointer hover:text-brand-primary"
-            onClick={() => navigate("/", { replace: true })}
-          />
+          <ArrowLeft className="text-white w-10 h-10 cursor-pointer hover:text-brand-primary" onClick={() => navigate("/", { replace: true })} />
         </div>
         <section className="flex flex-col gap-y-4">
           <section className="flex flex-col items-center">
@@ -115,16 +105,10 @@ export default function Inicio() {
               </h1>
               <div className="flex justify-center">
                 <button
-                  onClick={() =>
-                    aberto ? setShowConfirmacaoFechar(true) : handleStatus()
-                  }
+                  onClick={() => (aberto ? setShowConfirmacaoFechar(true) : handleStatus())}
                   className={`
                     flex flex-col items-center justify-center rounded-xl border text-white w-35 h-9 transition font-bold
-                    ${
-                      aberto
-                        ? "bg-feedback-success cursor-pointer border-feedback-success"
-                        : "bg-feedback-error border-feedback-error"
-                    }
+                    ${aberto ? "bg-feedback-success cursor-pointer border-feedback-success" : "bg-feedback-error border-feedback-error"}
                   `}
                 >
                   {aberto ? "Aberto" : "Fechado"}
