@@ -9,7 +9,7 @@ import {
   editarServicoRealizado,
   excluirServicoRealizado,
 } from "../../services/api";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { AlertaConfirmacao } from "../AlertaConfirmacao";
 import { toast } from "sonner";
 
@@ -31,13 +31,29 @@ export function ModalServico({ editar, isModalOpen, setIsModalOpen, dataServico 
 
   const [isModalExcluir, setIsModalExcluir] = useState(false);
 
+  const [desconto, setDesconto] = useState("0");
+  const [tipoDesconto, setTipoDesconto] = useState("R$");
+
   const adicionalValorPagamento = formaPagamento?.adicional_forma_pagamento || 0;
-  const valorTotal =
+  const subtotal =
     Number(cabelo?.valor_cabelo || 0) +
     Number(barba?.valor_barba || 0) +
     Number(sobrancelha?.valor_sobrancelha || 0) +
     Number(adicional?.valor_adicional || 0) +
     Number(adicionalValorPagamento || 0);
+
+  const valorDescontoCalculado = useMemo(() => {
+    const valorParseado = parseFloat(desconto.replace(",", ".")) || 0;
+    if (valorParseado <= 0) return 0;
+
+    if (tipoDesconto === "R$") {
+      return valorParseado;
+    } else {
+      return (subtotal * valorParseado) / 100;
+    }
+  }, [desconto, tipoDesconto, subtotal]);
+
+  const valorTotalFinal = Math.max(0, subtotal - valorDescontoCalculado);
 
   function verificarCampo() {
     if (!cabelo && !barba && !sobrancelha && !adicional) {
@@ -92,9 +108,9 @@ export function ModalServico({ editar, isModalOpen, setIsModalOpen, dataServico 
 
     try {
       if (editar) {
-        await editarServicoRealizado(dataServico[0].id_servico_realizado, formaPagamento.id_forma_pagamento, valorTotal, itens);
+        await editarServicoRealizado(dataServico[0].id_servico_realizado, formaPagamento.id_forma_pagamento, valorTotalFinal, itens);
       } else {
-        await adicionarServicoRealizado(formaPagamento.id_forma_pagamento, valorTotal, itens);
+        await adicionarServicoRealizado(formaPagamento.id_forma_pagamento, valorTotalFinal, itens);
       }
       setIsModalOpen(false);
     } catch (error) {
@@ -261,16 +277,46 @@ export function ModalServico({ editar, isModalOpen, setIsModalOpen, dataServico 
             </select>
           </div>
 
-          {/* Valor Total */}
-          <section className="grid grid-cols-2 gap-x-2">
-            <div className="flex justify-end items-center pt-6">
-              <p className="text-body-bold">R$</p>
+          {/* Desconto e Valor Total */}
+          <section className="grid grid-cols-3 gap-x-2">
+            {/* Tipo de Desconto */}
+            <div className="flex flex-col">
+              <label htmlFor="tipoDesconto" className="text-body-bold">
+                Tipo Desc.
+              </label>
+              <select id="tipoDesconto" value={tipoDesconto} onChange={(e) => setTipoDesconto(e.target.value)} className="input-base h-10">
+                <option value="R$">R$</option>
+                <option value="%">%</option>
+              </select>
             </div>
+
+            {/* Valor do Desconto */}
+            <div className="flex flex-col">
+              <label htmlFor="desconto" className="text-body-bold">
+                Desconto
+              </label>
+              <input
+                id="desconto"
+                value={desconto}
+                type="text"
+                inputMode="decimal"
+                className="input-base h-10"
+                onChange={(e) => setDesconto(e.target.value)}
+              />
+            </div>
+
+            {/* Valor Total Final */}
             <div className="flex flex-col">
               <label htmlFor="valortotal" className="text-end text-body-bold">
                 Valor Total
               </label>
-              <input id="valortotal" value={valorTotal} readOnly type="text" className="input-base h-10 text-end pr-2 bg-gray-200 text-body-bold" />
+              <input
+                id="valortotal"
+                value={valorTotalFinal.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
+                readOnly
+                type="text"
+                className="input-base h-10 text-end pr-2 bg-gray-200 text-body-bold"
+              />
             </div>
           </section>
         </section>
