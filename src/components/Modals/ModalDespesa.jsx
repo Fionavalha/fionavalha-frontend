@@ -88,13 +88,6 @@ export default function ModalDespesa({ isOpen, setIsOpen, dataServico, editar = 
             <input id="valor" required type="text" value={valorDespesa} onChange={(e) => setValorDespesa(e.target.value)} className="input-base h-9" />
           </div>
 
-          <DatePicker label="Data" date={data} setDate={setData} active={isDespesaFixa} />
-
-          <div className="flex justify-end gap-2">
-            <label htmlFor="fixa">Despesa fixa?</label>
-            <input type="checkbox" className="w-5" id="fixa" checked={isDespesaFixa} onChange={(e) => setIsDespesaFixa(e.target.checked)} />
-          </div>
-
           <div className="grid grid-cols-2 gap-2">
             <Button className="w-full" variant="outline" onClick={() => setIsOpen(false)}>
               Cancelar
