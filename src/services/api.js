@@ -59,17 +59,16 @@ export async function consultarCabelos() {
   }
 }
 
-
 export async function editarCabelo(id, pNome, pValor) {
   try {
     await api.put("/cabelos/" + id, {
       nome_cabelo: pNome,
       valor_cabelo: pValor,
-    })
+    });
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
-};
+}
 
 export async function consultarBarbas() {
   try {
@@ -86,11 +85,11 @@ export async function editarBarba(id, pNome, pValor) {
     await api.put("/barbas/" + id, {
       nome_barba: pNome,
       valor_barba: pValor,
-    })
+    });
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
-};
+}
 
 export async function consultarSobrancelhas() {
   try {
@@ -107,11 +106,11 @@ export async function editarSobrancelha(id, pNome, pValor) {
     await api.put("/sobrancelhas/" + id, {
       nome_sobrancelha: pNome,
       valor_barba: pValor,
-    })
+    });
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
-};
+}
 
 export async function consultarAdicionais() {
   try {
@@ -128,11 +127,11 @@ export async function editarAdicionais(id, pNome, pValor) {
     await api.put("/adicionais/" + id, {
       nome_adicional: pNome,
       valor_adicional: pValor,
-    })
+    });
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
-};
+}
 
 export async function consultarFormasPagamento() {
   try {
@@ -144,18 +143,15 @@ export async function consultarFormasPagamento() {
   }
 }
 
-export async function adicionarServicoRealizado(pFormaPagamentoId, pValorTotal, pItemId) {
+export async function adicionarServicoRealizado(dadosServico) {
   try {
-    await api.post("/servicos-realizados", {
-      forma_pagamento_id: pFormaPagamentoId,
-      valor_total: pValorTotal,
-      itens: pItemId,
-    });
+    await api.post("/servicos-realizados", dadosServico);
   } catch (error) {
-    console.error(error);
-    throw error.response?.data?.erro || "Falha ao confimar o serviço";
+    console.error("Erro em adicionarServicoRealizado:", error.response?.data || error.message);
+    throw new Error(error.response?.data?.erro || "Falha ao confimar o serviço");
   }
 }
+
 export async function consultarServicosRealizados(data = "") {
   try {
     const response = await api.get(`/servicos-realizados?data=${data}`);
@@ -176,23 +172,20 @@ export async function consultarItensServicoRealizado(id) {
   }
 }
 
-export async function excluirServicoRealizado(id) {
+export async function excluirServicoRealizado(id_servico_realizado) {
   try {
-    await api.delete("/servicos-realizados/" + id);
+    await api.delete("/servicos-realizados/" + id_servico_realizado);
   } catch (error) {
     console.error(error);
   }
 }
 
-export async function editarServicoRealizado(id, pFormaPagamentoId, pValorTotal, pItemId) {
+export async function editarServicoRealizado(id_servico_realizado, dadosServico) {
   try {
-    await api.put("/servicos-realizados/" + id, {
-      forma_pagamento_id: pFormaPagamentoId,
-      valor_total: pValorTotal,
-      itens: pItemId,
-    });
+    await api.put(`/servicos-realizados/${id_servico_realizado}`, dadosServico);
   } catch (error) {
-    console.error(error);
+    console.error("Erro em editarServicoRealizado:", error.response?.data || error.message);
+    throw new Error(error.response?.data?.erro || "Falha ao editar o serviço");
   }
 }
 
@@ -343,7 +336,7 @@ export async function consultarAdicional() {
 export async function editarAdicional(pAdicionalFormaPagamento) {
   try {
     await api.put(`/barbearias/adicional-forma-pagamento`, {
-     adicional_forma_pagamento: pAdicionalFormaPagamento,
+      adicional_forma_pagamento: pAdicionalFormaPagamento,
     });
   } catch (error) {
     console.error(error);
