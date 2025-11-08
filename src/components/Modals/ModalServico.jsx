@@ -12,8 +12,6 @@ import {
 import { useEffect, useState, useMemo } from "react";
 import { AlertaConfirmacao } from "../AlertaConfirmacao";
 import { toast } from "sonner";
-import { MinusCircleIcon } from "lucide-react";
-import { CirclePlusIcon } from "lucide-react";
 
 export function ModalServico({ editar, isModalOpen, setIsModalOpen, dataServico }) {
   const [dataCabelos, setDataCabelos] = useState([]);
