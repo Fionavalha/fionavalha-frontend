@@ -10,8 +10,8 @@ export default function ModalServicoPersonalizado({ isOpen, setIsOpen, data, edi
 
   async function handleConfirmar(e) {
     e.preventDefault();
-    if (!nome?.trim() || !valor || Number(valor) <= 0) {
-      toast.error("Por favor, preencha o nome e um valor válido para o Serviço.");
+    if (!valor || Number(valor) <= 0) {
+      toast.error("Por favor, preencha um valor válido para o Serviço.");
       return;
     }
     try {
@@ -79,7 +79,7 @@ export default function ModalServicoPersonalizado({ isOpen, setIsOpen, data, edi
         <form onSubmit={handleConfirmar} className="flex flex-col gap-y-4">
           <div className="flex flex-col">
             <label htmlFor="nome">Nome</label>
-            <input id="nome" required type="text" value={nome} onChange={(e) => setNome(e.target.value.toLocaleUpperCase())} className="input-base h-9 uppercase" />
+            <input id="nome" required disabled type="text" value={nome} className="input-base bg-zinc-200 text-zinc-600 h-9 uppercase" />
           </div>
 
           <div className="flex flex-col">
