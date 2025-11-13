@@ -30,7 +30,8 @@ export function ModalServico({ editar, isModalOpen, setIsModalOpen, dataServico 
   const [formaPagamento, setFormaPagamento] = useState(null);
   const [desconto, setDesconto] = useState("0");
   const [tipoDesconto, setTipoDesconto] = useState("R$");
-
+  const [tipoAcrescimo, setTipoAcrescimo] = useState("R$")
+  const [acrescimo, setAcrescimo] = useState("0");
   const [isModalExcluir, setIsModalExcluir] = useState(false);
 
   async function listarServicos() {
@@ -96,7 +97,16 @@ export function ModalServico({ editar, isModalOpen, setIsModalOpen, dataServico 
     return (subtotal * valorParseado) / 100;
   }, [desconto, tipoDesconto, subtotal]);
 
-  const valorTotalFinal = Math.max(0, subtotal - valorDescontoCalculado);
+  const valorAdicionalCalculado = useMemo(() => {
+    const valorParseado = parseFloat(acrescimo.replace(",", ".")) || 0;
+    if (valorParseado <= 0) return 0;
+    if (tipoAcrescimo === "R$") return valorParseado;
+    return (subtotal * valorParseado) / 100;
+  }, [acrescimo, tipoAcrescimo, subtotal]);
+
+
+  const valorTotalFinal = Math.max(0, subtotal - valorDescontoCalculado + valorAdicionalCalculado);
+
 
   async function handleConfirmar() {
     if (itens.length === 0) {
@@ -315,29 +325,54 @@ export function ModalServico({ editar, isModalOpen, setIsModalOpen, dataServico 
             </select>
           </div>
 
-          {/* Desconto e Valor Total */}
-          <section className="grid grid-cols-3 gap-x-2">
-            {/* Tipo de Desconto */}
-            <div className="flex flex-col">
-              <label htmlFor="tipoDesconto" className="text-body-bold">
-                Tipo Desc.
-              </label>
-              <select id="tipoDesconto" value={tipoDesconto} onChange={(e) => setTipoDesconto(e.target.value)} className="input-base h-10">
-                <option value="R$">R$</option>
-                <option value="%">%</option>
-              </select>
+          {/* Desconto, Acréscimo e Valor Total */}
+          <section className="grid grid-cols-2 gap-x-2">
+            <div className="grid grid-cols-2 gap-2">
+              {/* Tipo de Desconto */}
+              <div className="flex flex-col">
+                <label htmlFor="tipoDesconto" className="text-body-bold">
+                  Tipo
+                </label>
+                <select id="tipoDesconto" value={tipoDesconto} onChange={(e) => setTipoDesconto(e.target.value)} className="input-base h-10">
+                  <option value="R$">R$</option>
+                  <option value="%">%</option>
+                </select>
+              </div>
+
+              {/* Valor do Desconto */}
+              <div className="flex flex-col">
+                <label htmlFor="desconto" className="text-body-bold">
+                  Desconto
+                </label>
+                <input id="desconto" value={desconto} type="text" inputMode="decimal" className="input-base h-10" onChange={(e) => setDesconto(e.target.value)} />
+              </div>
             </div>
 
-            {/* Valor do Desconto */}
-            <div className="flex flex-col">
-              <label htmlFor="desconto" className="text-body-bold">
-                Desconto
-              </label>
-              <input id="desconto" value={desconto} type="text" inputMode="decimal" className="input-base h-10" onChange={(e) => setDesconto(e.target.value)} />
+            <div className="grid grid-cols-2 gap-2">
+
+              {/* Tipo Acréscimo */}
+              <div className="flex flex-col">
+                <label htmlFor="acrescimo" className="text-body-bold">
+                  Tipo
+                </label>
+                <select id="acrescimo" value={tipoAcrescimo} onChange={(e) => setTipoAcrescimo(e.target.value)} className="input-base h-10">
+                  <option value="R$">R$</option>
+                  <option value="%">%</option>
+                </select>
+              </div>
+
+              {/* Valor do Acréscimo */}
+              <div className="flex flex-col">
+                <label htmlFor="valorAcrescimo" className="text-body-bold">
+                  Acrescimo
+                </label>
+                <input id="valorAcrescimo" value={acrescimo} type="text" inputMode="decimal" className="input-base h-10" onChange={(e) => setAcrescimo
+                  (e.target.value)} />
+              </div>
             </div>
 
             {/* Valor Total Final */}
-            <div className="flex flex-col">
+            <div className="col-span-2 flex flex-col items-end mt-2">
               <label htmlFor="valortotal" className="text-end text-body-bold">
                 Valor Total
               </label>
@@ -346,7 +381,7 @@ export function ModalServico({ editar, isModalOpen, setIsModalOpen, dataServico 
                 value={valorTotalFinal.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
                 readOnly
                 type="text"
-                className="input-base h-10 text-end pr-2 bg-gray-200 text-body-bold"
+                className="input-base h-10 w-35 text-end pr-2 bg-gray-200 text-body-bold"
               />
             </div>
           </section>
