@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const api = axios.create({
-  baseURL: "https://fionavalha-backend.vercel.app/",
+  baseURL: "https://www.fionavalha.com.br/",
 });
 
 api.interceptors.request.use(
