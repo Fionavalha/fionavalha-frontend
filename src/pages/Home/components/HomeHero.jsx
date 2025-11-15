@@ -7,18 +7,18 @@ export default function HomeHero({ numeroClientes, isSalaoAberto, horarioInicio,
     <section className="flex flex-col bg-[url('../assets/images/bg.svg')] bg-gradient-to-b from-[rgba(6,18,30,0.1)] bg-no-repeat to-[#06121e] min-h-svh">
       <header className="flex justify-end w-full p-6">
         <Link to="/login">
-          <CircleUserRound width={40} height={40} className="text-white hover:text-brand-primary cursor-pointer" />
+          <CircleUserRound aria-label="Login" width={40} height={40} className="text-white hover:text-brand-primary cursor-pointer" />
         </Link>
       </header>
 
       <section className="flex flex-col items-center grow gap-y-2">
-        <img src={logoBarbearia} className="rounded-full w-48 h-48 border-2 border-white" alt="Logo" />
+        <img src={logoBarbearia} alt="Logo" className="rounded-full w-48 h-48 border-2 border-white" fetchpriority="high" loading="eager" />
         <h1 className="heading-1 text-center leading-10 sm:leading-16 text-white">
           BARBEARIA <br /> FIO NAVALHA
         </h1>
-        <h3 className="text-body-bold text-white px-4 text-center">
+        <h2 className="text-body-bold text-white px-4 text-center">
           Horário de funcionamento: Seg à Sab / <strong>{horarioInicio}</strong> às <strong>{horarioFim}</strong>
-        </h3>
+        </h2>
 
         <div>
           {isSalaoAberto ? (
