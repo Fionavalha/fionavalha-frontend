@@ -31,7 +31,7 @@ export default function HomeHero({ numeroClientes, isSalaoAberto, horarioInicio,
 
       {isSalaoAberto && (
         <div className="text-white gap-y-2 pb-8">
-          {numeroClientes > 1 ? (
+          {numeroClientes >= 1 ? (
             <>
               <h2 className="heading-3 text-center">Clientes no salão:</h2>
               <h2 className="heading-1 text-center">{numeroClientes}</h2>
