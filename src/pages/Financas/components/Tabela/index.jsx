@@ -1,10 +1,25 @@
-import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { desformatarDinheiro, formatarDataPtBr, formatarDinheiro } from "../../../../utils/formatador";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  desformatarDinheiro,
+  formatarDataPtBr,
+  formatarDinheiro,
+} from "../../../../utils/formatador";
 
 export function TabelaReceitas({ data = [], total = null }) {
   return (
     <Table className="bg-white w-full">
-      <TableCaption className="bg-text-primary p-3 text-white font-medium">Receitas</TableCaption>
+      <TableCaption className="bg-text-primary p-3 text-white font-medium">
+        Receitas
+      </TableCaption>
       <TableHeader>
         <TableRow>
           <TableHead className="w-1/2 text-left font-bold">CORTE</TableHead>
@@ -18,15 +33,25 @@ export function TabelaReceitas({ data = [], total = null }) {
             <TableRow key={item?.nome}>
               <TableCell className="w-1/2 text-left">{item?.nome}</TableCell>
               <TableCell className="w-1/4 text-center">{item?.qtd}</TableCell>
-              <TableCell className="w-1/4 text-right">{formatarDinheiro(Number(item?.valor_total))}</TableCell>
+              <TableCell className="w-1/4 text-right">
+                {formatarDinheiro(Number(item?.valor_total))}
+              </TableCell>
             </TableRow>
           ))}
       </TableBody>
       <TableFooter>
         <TableRow>
           <TableCell className="text-left font-bold w-1/2">TOTAL</TableCell>
-          <TableCell className="text-center font-bold w-1/4">{total?.qtd}</TableCell>
-          <TableCell className={`text-right font-bold w-1/4 ${formatarDinheiro(total?.valor_total) > 0 ? "text-feedback-success" : "text-black"}`}>
+          <TableCell className="text-center font-bold w-1/4">
+            {total?.qtd}
+          </TableCell>
+          <TableCell
+            className={`text-right font-bold w-1/4 ${
+              formatarDinheiro(total?.valor_total) > 0
+                ? "text-feedback-success"
+                : "text-black"
+            }`}
+          >
             {formatarDinheiro(Number(total?.valor_total))}
           </TableCell>
         </TableRow>
@@ -38,7 +63,9 @@ export function TabelaReceitas({ data = [], total = null }) {
 export function TabelaDespesas({ data = [], total = null }) {
   return (
     <Table className="bg-white w-full">
-      <TableCaption className="bg-text-primary p-3 text-white font-medium">Despesas</TableCaption>
+      <TableCaption className="bg-text-primary p-3 text-white font-medium">
+        Despesas
+      </TableCaption>
       <TableHeader>
         <TableRow>
           <TableHead className="w-2/3 text-left font-bold">DESPESA</TableHead>
@@ -51,10 +78,16 @@ export function TabelaDespesas({ data = [], total = null }) {
         {data?.length > 0 &&
           data.map((item) => (
             <TableRow key={item?.id_despesa}>
-              <TableCell className="w-2/3 text-left">{item?.nome_despesa}</TableCell>
-              <TableCell className="w-1/5 text-center">{formatarDataPtBr(item?.data_despesa)}</TableCell>
+              <TableCell className="w-2/3 text-left">
+                {item?.nome_despesa}
+              </TableCell>
+              <TableCell className="w-1/5 text-center">
+                {formatarDataPtBr(item?.data_despesa)}
+              </TableCell>
               <TableCell className="w-1/5 text-center">{item?.fixa}</TableCell>
-              <TableCell className="w-1/5 text-right">{formatarDinheiro(Number(item?.valor_despesa))}</TableCell>
+              <TableCell className="w-1/5 text-right">
+                {formatarDinheiro(Number(item?.valor_despesa))}
+              </TableCell>
             </TableRow>
           ))}
       </TableBody>
@@ -63,7 +96,15 @@ export function TabelaDespesas({ data = [], total = null }) {
           <TableCell className="text-left font-bold" colSpan={3}>
             TOTAL
           </TableCell>
-          <TableCell className={`text-right font-bold ${Number(total?.valor_total) > 0 ? "text-feedback-error" : "text-black"}`}>{formatarDinheiro(Number(total?.valor_total))}</TableCell>
+          <TableCell
+            className={`text-right font-bold ${
+              Number(total?.valor_total) > 0
+                ? "text-feedback-error"
+                : "text-black"
+            }`}
+          >
+            {formatarDinheiro(Number(total?.valor_total))}
+          </TableCell>
         </TableRow>
       </TableFooter>
     </Table>
@@ -73,14 +114,57 @@ export function TabelaDespesas({ data = [], total = null }) {
 export function TabelaTotal({ total = null }) {
   return (
     <Table className="bg-white w-full">
-      <TableCaption className="bg-text-primary p-3 text-white font-medium">Total</TableCaption>
+      <TableCaption className="bg-text-primary p-3 text-white font-medium">
+        Total
+      </TableCaption>
       <TableBody>
         <TableRow>
           <TableCell className="font-bold">TOTAL</TableCell>
-          <TableCell className={`${desformatarDinheiro(total) > 0 ? "text-feedback-success" : desformatarDinheiro(total) === 0 ? "text-black" : "text-feedback-error"} text-right font-bold`}>
+          <TableCell
+            className={`${
+              desformatarDinheiro(total) > 0
+                ? "text-feedback-success"
+                : desformatarDinheiro(total) === 0
+                ? "text-black"
+                : "text-feedback-error"
+            } text-right font-bold`}
+          >
             {total}
           </TableCell>
         </TableRow>
+      </TableBody>
+    </Table>
+  );
+}
+
+export function TabelaReceitasFormaPagamento({ data = [] }) {
+  return (
+    <Table className="bg-white w-full">
+      <TableCaption className="bg-text-primary p-3 text-white font-medium">
+        Receitas Formas Pagamento
+      </TableCaption>
+      <TableHeader>
+        <TableRow>
+          <TableHead className="w-1/2 text-left font-bold">PAGAMENTO</TableHead>
+          <TableHead className="w-1/4 text-center font-bold">QTD</TableHead>
+          <TableHead className="w-1/4 text-right font-bold">VALOR</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {data?.length > 0 &&
+          data.map((item) => (
+            <TableRow key={item?.nome}>
+              <TableCell className="w-1/2 text-left">
+                {item?.nome_pagamento}
+              </TableCell>
+              <TableCell className="w-1/4 text-center">
+                {item?.quantidade}
+              </TableCell>
+              <TableCell className="w-1/4 text-right">
+                {formatarDinheiro(Number(item?.total))}
+              </TableCell>
+            </TableRow>
+          ))}
       </TableBody>
     </Table>
   );

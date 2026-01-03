@@ -45,7 +45,9 @@ export async function alterarSenha(pSenhaAntiga, pSenhaNova) {
     return response.data;
   } catch (error) {
     console.error(error);
-    throw error.response?.data?.mensagem || "Falha na comunicação com o servidor";
+    throw (
+      error.response?.data?.mensagem || "Falha na comunicação com o servidor"
+    );
   }
 }
 
@@ -147,8 +149,13 @@ export async function adicionarServicoRealizado(dadosServico) {
   try {
     await api.post("/servicos-realizados", dadosServico);
   } catch (error) {
-    console.error("Erro em adicionarServicoRealizado:", error.response?.data || error.message);
-    throw new Error(error.response?.data?.erro || "Falha ao confimar o serviço");
+    console.error(
+      "Erro em adicionarServicoRealizado:",
+      error.response?.data || error.message
+    );
+    throw new Error(
+      error.response?.data?.erro || "Falha ao confimar o serviço"
+    );
   }
 }
 
@@ -180,18 +187,37 @@ export async function excluirServicoRealizado(id_servico_realizado) {
   }
 }
 
-export async function editarServicoRealizado(id_servico_realizado, dadosServico) {
+export async function editarServicoRealizado(
+  id_servico_realizado,
+  dadosServico
+) {
   try {
     await api.put(`/servicos-realizados/${id_servico_realizado}`, dadosServico);
   } catch (error) {
-    console.error("Erro em editarServicoRealizado:", error.response?.data || error.message);
+    console.error(
+      "Erro em editarServicoRealizado:",
+      error.response?.data || error.message
+    );
     throw new Error(error.response?.data?.erro || "Falha ao editar o serviço");
   }
 }
 
 export async function consultarReceitas(dataInicial, dataFinal) {
   try {
-    const response = await api.get(`/receitas?data_inicial=${dataInicial}&data_final=${dataFinal}`);
+    const response = await api.get(
+      `/receitas?data_inicial=${dataInicial}&data_final=${dataFinal}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function consultarReceitasFormaPagamento(dataInicial, dataFinal) {
+  try {
+    const response = await api.get(
+      `/receitas/formas-pagamento?data_inicial=${dataInicial}&data_final=${dataFinal}`
+    );
     return response.data;
   } catch (error) {
     console.error(error);
@@ -202,7 +228,9 @@ export async function consultarDespesas(dataInicial = "", dataFinal = "") {
   try {
     let response;
     if (dataInicial !== "" && dataFinal !== "") {
-      response = await api.get(`/despesas?data_inicial=${dataInicial}&data_final=${dataFinal}`);
+      response = await api.get(
+        `/despesas?data_inicial=${dataInicial}&data_final=${dataFinal}`
+      );
     } else {
       response = await api.get(`/despesas`);
     }
@@ -232,7 +260,13 @@ export async function alterarNumeroClientes(numero_clientes) {
   }
 }
 
-export async function editarDespesa(id, pNomeDespesa, pValorDespesa, pDataDespesa, pFixa) {
+export async function editarDespesa(
+  id,
+  pNomeDespesa,
+  pValorDespesa,
+  pDataDespesa,
+  pFixa
+) {
   try {
     await api.put("/despesas/" + id, {
       nome_despesa: pNomeDespesa,
@@ -262,7 +296,12 @@ export async function consultarNumeroClientes() {
   }
 }
 
-export async function adicionarDespesaRealizada(pNomeDespesa, pValorDespesa, pDataDespesa, pFixa) {
+export async function adicionarDespesaRealizada(
+  pNomeDespesa,
+  pValorDespesa,
+  pDataDespesa,
+  pFixa
+) {
   try {
     await api.post("/despesas", {
       nome_despesa: pNomeDespesa,
