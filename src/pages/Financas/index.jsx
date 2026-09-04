@@ -182,7 +182,7 @@ export default function Financas() {
           {formatarDataPtBr(formatarDataLocal(dataFinal))}
         </p>
 
-        <div className="flex flex-col items-center w-full min-h-dvh">
+        <div className="flex flex-col items-center w-full overflow-y-auto pb-12">
           <TabelaReceitas data={dadosReceitas} total={totalReceitas} />
           <TabelaReceitasFormaPagamento data={dadosReceitasFormaPagamento} />
           <TabelaDespesas data={dadosDespesas} total={totalDespesas} />
