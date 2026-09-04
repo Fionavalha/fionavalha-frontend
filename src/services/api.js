@@ -240,6 +240,28 @@ export async function consultarDespesas(dataInicial = "", dataFinal = "") {
   }
 }
 
+export async function consultarResumoAnual(ano) {
+  try {
+    const response = await api.get(`/resumo/anual`, {
+      params: { ano },
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+}
+
+export async function consultarAnosComDados() {
+  try {
+    const response = await api.get(`/resumo/anos`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+}
+
 export async function consultarDespesa(id) {
   try {
     let response;
